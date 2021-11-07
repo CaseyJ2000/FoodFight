@@ -1,1 +1,1 @@
-Created to allow for intiial commit. Should be updated to something more useful.
+Created to allow for initial commit. Should be updated to something more useful.
