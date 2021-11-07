@@ -1,33 +1,27 @@
+"""Loads the app"""
 import os
 from dotenv import load_dotenv, find_dotenv
-import flask
-from flask.helpers import flash
-from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import (
-    login_user,
-    current_user,
-    LoginManager,
-    UserMixin,
-    login_required,
-)
-from requests.api import request
+from flask_login import (login_user, current_user, LoginManager, UserMixin,
+                         login_required)
+import flask
 from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv(find_dotenv())
 
 app = flask.Flask(__name__)
-uri = os.getenv("DATABASE_URL")
+uri = os.getenv('DATABASE_URL')
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = os.getenv("SECRET_KEY")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = os.getenv('SECRET_KEY')
 
 db = SQLAlchemy(app)
 
 
 class User(UserMixin, db.Model):
+    """Creates model for User. Username is the identifier"""
     id = db.Column(db.Integer, primary_key=True)
     password = db.Column(db.String(100))
     username = db.Column(db.String(1000), unique=True)
@@ -36,6 +30,7 @@ class User(UserMixin, db.Model):
         return f"<User {self.username}>"
 
     def get_username(self):
+        """Returns username"""
         return self.username
 
 
@@ -48,17 +43,20 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_name):
+    """loads user"""
     return User.query.get(user_name)
 
 
 @app.route('/index')
 @login_required
 def index():
-    return flask.render_template("index.html")
+    """Loads index webpage"""
+    return flask.render_template('index.html')
 
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
+    """Endpoint for signup"""
     if flask.request.method == 'POST':
         username = flask.request.form.get('username')
         password = flask.request.form.get('password')
@@ -77,11 +75,12 @@ def signup():
 
         return flask.redirect(flask.url_for('login'))
     else:
-        return flask.render_template("signup.html")
+        return flask.render_template('signup.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    """Endpoint for login"""
     if flask.request.method == 'POST':
         username = flask.request.form.get('username')
         password = flask.request.form.get('password')
@@ -97,8 +96,9 @@ def login():
         return flask.render_template('login.html')
 
 
-@app.route("/")
+@app.route('/')
 def main():
+    """Origin for user Login"""
     if current_user.is_authenticated:
         return flask.redirect(flask.url_for('index'))
     return flask.redirect(flask.url_for('login'))
