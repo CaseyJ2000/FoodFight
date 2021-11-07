@@ -47,11 +47,11 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
-@app.route('/index')
+@app.route('/menu')
 @login_required
-def index():
-    """Loads index webpage"""
-    return flask.render_template('index.html')
+def menu():
+    """Loads menu webpage"""
+    return flask.render_template('menu.html')
 
 
 @app.route('/signup', methods=['POST', 'GET'])
@@ -91,7 +91,7 @@ def login():
             flask.flash("Username or password bad")
             return flask.redirect(flask.url_for('login'))
         login_user(user)
-        return flask.redirect(flask.url_for('index'))
+        return flask.redirect(flask.url_for('menu'))
     else:
         return flask.render_template('login.html')
 
@@ -100,7 +100,7 @@ def login():
 def main():
     """Origin for user Login"""
     if current_user.is_authenticated:
-        return flask.redirect(flask.url_for('index'))
+        return flask.redirect(flask.url_for('menu'))
     return flask.redirect(flask.url_for('login'))
 
 
