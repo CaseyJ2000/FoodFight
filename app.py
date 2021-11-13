@@ -61,55 +61,50 @@ def load_user(user_name):
 @app.route("/menu")
 @login_required
 def menu():
-    # term = "Cheesecake"
-    # location = "NYC"
-    bizname = flask.request.form.get("term")
-    bizlocation = flask.request.form.get("location")
-
-    # search_results = len(term) > 0
-    # if search_results:
-    # restaurantInfo = getRestaurant(search_term, search_location)
-    restaurantInfo = getRestaurant()
-    # (name, image, location) = restaurantInfo()
-    # (song_name, song_artist, song_image_url, preview_url) = get_song_data(artist_id, access_token)
+    term = "Cheesecake"
+    location = "NYC"
+    restaurantInfo = getRestaurant(term, location)
     name = restaurantInfo[0]  # biz name
     image = restaurantInfo[1]  # biz image
     location = restaurantInfo[2]  # biz location
-    # else:
-    #     biz_name = None  # biz name
-    #     biz_image = None  # biz image
-    #     biz_location = None  # biz location
+    length = len(name)
 
     """Loads menu webpage"""
     return flask.render_template(
-        "menu.html",
-        image=image,
-        location=location,
-        name=name,
+        "menu.html", image=image, location=location, name=name, length=length
     )
 
 
 @app.route("/search", methods=["GET", "POST"])
 @login_required
 def search():
+    term = "Cheesecake"
+    location = "NYC"
     if flask.request.method == "POST":
         # store as global variable or pass to method
-        term = flask.request.form.get("term")
-        location = flask.request.form.get("location")
-        try:
-            getRestaurant()
-        except Exception:
-            return flask.render_template("menu.html")
-        return flask.render_template("menu.html", term=term, location=location)
+        newterm = flask.request.form.get("term")
+        newlocation = flask.request.form.get("location")
 
-    # getRestaurant()
+        restaurantInfo = getRestaurant(newterm, newlocation)
+        name = restaurantInfo[0]  # biz name
+        image = restaurantInfo[1]  # biz image
+        location = restaurantInfo[2]  # biz location
+
+        return flask.render_template(
+            "menu.html",
+            term=term,
+            location=location,
+            image=image,
+            name=name,
+        )
+
     # getRestaurant(term, location)
     # try:
     #     getRestaurant(term, location)
     # except Exception:
     #     return flask.redirect(flask.url_for("menu"))
 
-    return flask.redirect(flask.url_for("menu"))
+    # return flask.redirect(flask.url_for("menu"))
 
 
 @app.route("/signup", methods=["POST", "GET"])

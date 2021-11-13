@@ -13,7 +13,7 @@
         <input type="text" size="30" name="location" placeholder="city, state, zipcode">
         <input type="submit" value="Search">
     </form>
-    <h1> Results </h1>
+    <h2> Top Results </h2>
 
     <!-- Get length of results and print -->
     {%for i in range (0, 20)%}
@@ -22,12 +22,7 @@
         <img src="{{ image [i]}}" width=300 height=300 />
     </div>
     {% endfor %}
-    <!-- {% if search_term %} -->
-    <!-- <h2>{{ name }} </h2>
-    <div>
-        <img src="{{ image }}" width=300 height=300 />
-    </div> -->
-    <!-- {% endif %} -->
+
 </body>
 
 </html>

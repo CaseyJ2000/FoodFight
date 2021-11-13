@@ -46,66 +46,10 @@ HEADERS = {"Authorization": "Bearer %s" % API_KEY}
 # create exception for small cities so app doesn't break
 
 
-# def getRestaurant():  # function for getting name of Restuarant
-#     PARAMETERS = {
-#         "limit": 10,
-#         "term": "seafood",
-#         "location": "Chicago",
-#     }
-
-#     response = requests.get(url=BASE_URL, params=PARAMETERS, headers=HEADERS)
-
-#     # response = requests.get(
-#     #     f"https://api.yelp.com/v3/businesses/search?term={term}&location={location}",
-#     #     # params={"limit": 10},
-#     #     headers=HEADERS,
-#     # )
-#     # Convert the JSON String
-#     data = response.json()
-#     # print(data)
-#     for i in range(0, 10):
-#         try:
-#             biz = data["businesses"][i]["name"]
-#             print(biz)
-#         except KeyError:
-#             print("Couldn't fetch")
-#             break
-#     # for i in range(0, 20):
-#     biz_name = data["businesses"][i]["name"]
-#     biz_image = data["businesses"][i]["image_url"]
-#     biz_location = data["businesses"][i]["location"]["city"]
-
-#     # print(biz_name, biz_image, biz_location)
-
-#     return (biz_name, biz_image, biz_location)
-
-
-# print(getRestaurant())
-
-# PARAMETERS = {
-#     "limit": 20,
-#     "term": "seafood",
-#     "location": "Chicago",
-# }
-
-
-# def main_request():
-#     response = requests.get(url=BASE_URL, params=PARAMETERS, headers=HEADERS)
-#     return response.json()
-
-
-# def response(r):
-#     return r["businesses"]["name"]
-
-
-def getRestaurant():
-    term = "cheesecake"
-    location = "LA"
-    PARAMETERS = {
-        "limit": 20,
-        "term": term,
-        "location": location,
-    }
+def getRestaurant(term, location):
+    # term = "dessert"
+    # location = "LA"
+    PARAMETERS = {"term": term, "location": location}
 
     response = requests.get(url=BASE_URL, params=PARAMETERS, headers=HEADERS)
 
@@ -126,6 +70,35 @@ def getRestaurant():
     biz_image = image
     biz_location = location
     return (biz_name, biz_image, biz_location)
+
+
+# print(getRestaurant(term, location))
+
+
+# def getRestaurant():
+#     term = "dessert"
+#     location = "LA"
+#     PARAMETERS = {"term": term, "location": location}
+
+#     response = requests.get(url=BASE_URL, params=PARAMETERS, headers=HEADERS)
+
+#     data = response.json()
+#     name = []
+#     location = []
+#     image = []
+
+#     for i in data["businesses"]:
+#         name.append(i["name"])
+#         location.append(i["location"]["city"])
+#         image.append(i["image_url"])
+
+#     DATA = {"name": name, "location": location, "image": image}
+#     datalist = []
+#     datalist.append(DATA)
+#     biz_name = name
+#     biz_image = image
+#     biz_location = location
+#     return (biz_name, biz_image, biz_location)
 
 
 # print(getRestaurant())
