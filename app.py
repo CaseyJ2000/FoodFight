@@ -61,6 +61,14 @@ def load_user(user_name):
 @app.route("/menu")
 @login_required
 def menu():
+
+    """Loads menu webpage"""
+    return flask.render_template("menu.html")
+
+
+@app.route("/search")
+@login_required
+def search():
     term = "Cheesecake"
     location = "NYC"
     restaurantInfo = getRestaurant(term, location)
@@ -69,15 +77,15 @@ def menu():
     location = restaurantInfo[2]  # biz location
     length = len(name)
 
-    """Loads menu webpage"""
+    """Loads search webpage"""
     return flask.render_template(
-        "menu.html", image=image, location=location, name=name, length=length
+        "search.html", image=image, location=location, name=name, length=length
     )
 
 
-@app.route("/search", methods=["GET", "POST"])
+@app.route("/search_results", methods=["GET", "POST"])
 @login_required
-def search():
+def search_results():
     term = "Cheesecake"
     location = "NYC"
     if flask.request.method == "POST":
@@ -91,20 +99,12 @@ def search():
         location = restaurantInfo[2]  # biz location
 
         return flask.render_template(
-            "menu.html",
+            "search.html",
             term=term,
             location=location,
             image=image,
             name=name,
         )
-
-    # getRestaurant(term, location)
-    # try:
-    #     getRestaurant(term, location)
-    # except Exception:
-    #     return flask.redirect(flask.url_for("menu"))
-
-    # return flask.redirect(flask.url_for("menu"))
 
 
 @app.route("/signup", methods=["POST", "GET"])
