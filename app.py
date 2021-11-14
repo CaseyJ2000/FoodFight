@@ -1,6 +1,7 @@
 """Loads the app"""
 import os
 from dotenv import load_dotenv, find_dotenv
+from yelp import getRestaurant
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     login_user,
@@ -95,10 +96,58 @@ def signup():
 def like():
     business_id = flask.request.form.get("Like")
 
+    # try:
+    #     access_token = getRestaurant()
+    #     get(business_id, access_token)
+    # except Exception:
+    #     flask.flash("Invalid artist ID entered")
+    #     return flask.redirect(flask.url_for("index"))
+
     username = current_user.username
     db.session.add(liked_biz(business_id=business_id, username=username))
     db.session.commit()
     return flask.redirect(flask.url_for("search"))
+
+
+@app.route("/search")
+@login_required
+def search():
+    term = "Cheesecake"
+    location = "NYC"
+    restaurantInfo = getRestaurant(term, location)
+    name = restaurantInfo[0]  # biz name
+    image = restaurantInfo[1]  # biz image
+    location = restaurantInfo[2]  # biz location
+    length = len(name)
+
+    """Loads search webpage"""
+    return flask.render_template(
+        "search.html", image=image, location=location, name=name, length=length
+    )
+
+
+@app.route("/search_results", methods=["GET", "POST"])
+@login_required
+def search_results():
+    term = "Cheesecake"
+    location = "NYC"
+    if flask.request.method == "POST":
+        # store as global variable or pass to method
+        newterm = flask.request.form.get("term")
+        newlocation = flask.request.form.get("location")
+
+        restaurantInfo = getRestaurant(newterm, newlocation)
+        name = restaurantInfo[0]  # biz name
+        image = restaurantInfo[1]  # biz image
+        location = restaurantInfo[2]  # biz location
+
+        return flask.render_template(
+            "search.html",
+            term=term,
+            location=location,
+            image=image,
+            name=name,
+        )
 
 
 @app.route("/login", methods=["POST", "GET"])

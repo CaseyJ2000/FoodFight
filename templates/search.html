@@ -2,31 +2,44 @@
 <html>
 
 <head>
-
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='search.css' ) }} />
 </head>
 
 <body>
+
     <form action="/search_results" method="POST" class="search-box">
-        <h2> SEARCH </h2>
-        <input type="text" size="30" name="term" placeholder="sushi, coffee, etc">
-        <input type="text" size="30" name="location" placeholder="city, state, zipcode">
-        <input type="submit" value="Search">
+        <!-- <h2> SEARCH </h2> -->
+        <div class="search">
+            <div class="left-side">
+                <input type="text" size="30" name="term" placeholder="sushi, coffee, etc" class="field request">
+                <div class="field-wrapper">
+                    <span class="field-title find">Find</span>
+                </div>
+            </div>
+            <div class="right-side">
+                <input type="text" size="30" name="location" placeholder="city, state, zipcode" class="field request">
+                <div class="field-wrapper">
+                    <span class="field-title near">Near</span>
+                </div>
+            </div>
+            <input type="submit" value="Search" class="search-button">
+        </div>
+        </div>
     </form>
-    <h2> Top Results </h2>
+
+    <!-- <h2> Results </h2> -->
 
     <!-- Get length of results and print -->
-
+    {%for i in range (0, 20)%}
     <form action="/like" method="POST" class="search-box">
         <input type="submit" value="Like">
-    </form>
-    
-    {%for i in range (0, 20)%}
     <h2>{{ name [i] }} </h2>
-    <div>
-        <img src="{{ image [i] }}" width=300 height=300 />
-    </div>
+    <div class="box">
+        <img src="{{ image [i]}}" width=300 height=300 />
+    </div class="box">
     {% endfor %}
 
+    </section>
 </body>
 
 </html>
