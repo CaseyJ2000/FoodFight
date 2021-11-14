@@ -7,8 +7,7 @@
 
 <body>
 
-    <form action="/search_results" method="POST" class="search-box">
-        <!-- <h2> SEARCH </h2> -->
+    <form action="/search" method="POST" class="search-box">
         <div class="search">
             <div class="left-side">
                 <input type="text" size="30" name="term" placeholder="sushi, coffee, etc" class="field request">
@@ -27,9 +26,6 @@
         </div>
     </form>
 
-    <!-- <h2> Results </h2> -->
-
-    <!-- Get length of results and print -->
     {% if search_query %}
     {%for i in range (0, 20)%}
     <h2>{{ name [i] }} </h2>

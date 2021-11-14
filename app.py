@@ -66,52 +66,27 @@ def menu():
     return flask.render_template("menu.html")
 
 
-@app.route("/search")
-@login_required
-def search():
-    term = "Cheesecake"
-    location = "NYC"
-    restaurantInfo = getRestaurant(term, location)
-    name = restaurantInfo[0]  # biz name
-    image = restaurantInfo[1]  # biz image
-    location = restaurantInfo[2]  # biz location
-    length = len(name)
-
-    """Loads search webpage"""
-    return flask.render_template(
-        "search.html", image=image, location=location, name=name, length=length
-    )
-
-
-@app.route("/search_results", methods=["GET", "POST"])
+@app.route("/search", methods=["GET", "POST"])
 @login_required
 def search_results():
-    term = "Cheesecake"
-    location = "NYC"
-    search_query = len(term) > 0
-    if search_query:
-        if flask.request.method == "POST":
-            # store as global variable or pass to method
-            newterm = flask.request.form.get("term")
-            newlocation = flask.request.form.get("location")
+    if flask.request.method == "POST":
+        newterm = flask.request.form.get("term")
+        newlocation = flask.request.form.get("location")
 
-            restaurantInfo = getRestaurant(newterm, newlocation)
-            name = restaurantInfo[0]  # biz name
-            image = restaurantInfo[1]  # biz image
-            location = restaurantInfo[2]  # biz location
-
-        else:
-            (name, image, location) = (None, None, None)
-            return flask.redirect(flask.url_for("search"))
+        restaurantInfo = getRestaurant(newterm, newlocation)
+        name = restaurantInfo[0]
+        image = restaurantInfo[1]
+        location = restaurantInfo[2]
 
         return flask.render_template(
             "search.html",
-            search_query=search_query,
-            term=term,
+            search_query=True,
             location=location,
             image=image,
             name=name,
         )
+
+    return flask.render_template("search.html")
 
 
 @app.route("/signup", methods=["POST", "GET"])

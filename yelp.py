@@ -15,8 +15,6 @@ HEADERS = {"Authorization": "Bearer %s" % API_KEY}
 
 
 def getRestaurant(term, location):
-    # term = "dessert"
-    # location = "LA"
     PARAMETERS = {"term": term, "location": location}
 
     response = requests.get(url=BASE_URL, params=PARAMETERS, headers=HEADERS)
