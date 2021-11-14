@@ -2,26 +2,32 @@
 import os
 from dotenv import load_dotenv, find_dotenv
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import (login_user, current_user, LoginManager, UserMixin,
-                         login_required)
+from flask_login import (
+    login_user,
+    current_user,
+    LoginManager,
+    UserMixin,
+    login_required,
+)
 import flask
 from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv(find_dotenv())
 
 app = flask.Flask(__name__)
-uri = os.getenv('DATABASE_URL')
+uri = os.getenv("DATABASE_URL")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = os.getenv('SECRET_KEY')
+app.config["SQLALCHEMY_DATABASE_URI"] = uri
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.secret_key = os.getenv("SECRET_KEY")
 
 db = SQLAlchemy(app)
 
 
 class User(UserMixin, db.Model):
     """Creates model for User. Username is the identifier"""
+
     id = db.Column(db.Integer, primary_key=True)
     password = db.Column(db.String(100))
     username = db.Column(db.String(1000), unique=True)
@@ -47,64 +53,65 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
-@app.route('/menu')
+@app.route("/menu")
 @login_required
 def menu():
     """Loads menu webpage"""
-    return flask.render_template('menu.html')
+    return flask.render_template("menu.html")
 
 
-@app.route('/signup', methods=['POST', 'GET'])
+@app.route("/signup", methods=["POST", "GET"])
 def signup():
     """Endpoint for signup"""
-    if flask.request.method == 'POST':
-        username = flask.request.form.get('username')
-        password = flask.request.form.get('password')
+    if flask.request.method == "POST":
+        username = flask.request.form.get("username")
+        password = flask.request.form.get("password")
 
         user = User.query.filter_by(username=username).first()
         if user:
             flask.flash("Username taken")
-            return flask.redirect(flask.url_for('signup'))
+            return flask.redirect(flask.url_for("signup"))
 
-        new_user = User(username=username,
-                        password=generate_password_hash(password,
-                                                        method='sha256'))
+        new_user = User(
+            username=username,
+            password=generate_password_hash(password, method="sha256"),
+        )
 
         db.session.add(new_user)
         db.session.commit()
 
-        return flask.redirect(flask.url_for('login'))
+        return flask.redirect(flask.url_for("login"))
     else:
-        return flask.render_template('signup.html')
+        return flask.render_template("signup.html")
 
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route("/login", methods=["POST", "GET"])
 def login():
     """Endpoint for login"""
-    if flask.request.method == 'POST':
-        username = flask.request.form.get('username')
-        password = flask.request.form.get('password')
+    if flask.request.method == "POST":
+        username = flask.request.form.get("username")
+        password = flask.request.form.get("password")
 
         user = User.query.filter_by(username=username).first()
 
         if not user or not check_password_hash(user.password, password):
             flask.flash("Username or password bad")
-            return flask.redirect(flask.url_for('login'))
+            return flask.redirect(flask.url_for("login"))
         login_user(user)
-        return flask.redirect(flask.url_for('menu'))
+        return flask.redirect(flask.url_for("menu"))
     else:
-        return flask.render_template('login.html')
+        return flask.render_template("login.html")
 
 
-@app.route('/')
+@app.route("/")
 def main():
     """Origin for user Login"""
     if current_user.is_authenticated:
-        return flask.redirect(flask.url_for('menu'))
-    return flask.redirect(flask.url_for('login'))
+        return flask.redirect(flask.url_for("menu"))
+    return flask.redirect(flask.url_for("login"))
 
 
 if __name__ == "__main__":
-    app.run(host=os.getenv("IP", "0.0.0.0"),
-            port=int(os.getenv("PORT", "8081")),
-            debug=True)
+    app.run(
+        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8081")), debug=True
+    )
