@@ -63,7 +63,7 @@ def signup():
 
         user = User.query.filter_by(username=username).first()
         if user:
-            flask.flash("Username taken")
+            flask.flash("Email already in use, please retry with a different email!")
             return flask.redirect(flask.url_for('signup'))
 
         new_user = User(username=username,
@@ -88,7 +88,7 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if not user or not check_password_hash(user.password, password):
-            flask.flash("Username or password bad")
+            flask.flash("Incorrect Username or Password. Try again!")
             return flask.redirect(flask.url_for('login'))
         login_user(user)
         return flask.redirect(flask.url_for('menu'))
