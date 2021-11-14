@@ -6,6 +6,7 @@ from flask_login import (login_user, current_user, LoginManager, UserMixin,
                          login_required)
 import flask
 from werkzeug.security import generate_password_hash, check_password_hash
+import re
 
 load_dotenv(find_dotenv())
 
@@ -61,9 +62,15 @@ def signup():
         username = flask.request.form.get('username')
         password = flask.request.form.get('password')
 
+        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        if (not (re.fullmatch(regex, username))):
+            flask.flash("Incorrect email format")
+            return flask.redirect(flask.url_for('signup'))
+
         user = User.query.filter_by(username=username).first()
         if user:
-            flask.flash("Email already in use, please retry with a different email!")
+            flask.flash(
+                "Email already in use, please retry with a different email!")
             return flask.redirect(flask.url_for('signup'))
 
         new_user = User(username=username,
