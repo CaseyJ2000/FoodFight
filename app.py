@@ -61,12 +61,16 @@ def signup():
     if flask.request.method == 'POST':
         username = flask.request.form.get('username')
         password = flask.request.form.get('password')
+        repeatedPassword = flask.request.form.get('repeatedPassword')
 
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
         if (not (re.fullmatch(regex, username))):
             flask.flash("Incorrect email format")
             return flask.redirect(flask.url_for('signup'))
 
+        if (not (password == repeatedPassword)):
+            flask.flash("Passwords do not match")
+            return flask.redirect(flask.url_for('signup'))
         user = User.query.filter_by(username=username).first()
         if user:
             flask.flash(
