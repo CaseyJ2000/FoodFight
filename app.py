@@ -40,6 +40,12 @@ class User(UserMixin, db.Model):
         return self.username
 
 
+class liked_biz(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column(db.String(80), nullable=False)
+    username = db.Column(db.String(80), nullable=False)
+
+
 db.create_all()
 
 login_manager = LoginManager()
@@ -83,6 +89,16 @@ def signup():
         return flask.redirect(flask.url_for("login"))
     else:
         return flask.render_template("signup.html")
+
+
+@app.route("/like", methods=["POST"])
+def like():
+    business_id = flask.request.form.get("Like")
+
+    username = current_user.username
+    db.session.add(liked_biz(business_id=business_id, username=username))
+    db.session.commit()
+    return flask.redirect(flask.url_for("search"))
 
 
 @app.route("/login", methods=["POST", "GET"])
