@@ -88,18 +88,25 @@ def search():
 def search_results():
     term = "Cheesecake"
     location = "NYC"
-    if flask.request.method == "POST":
-        # store as global variable or pass to method
-        newterm = flask.request.form.get("term")
-        newlocation = flask.request.form.get("location")
+    search_query = len(term) > 0
+    if search_query:
+        if flask.request.method == "POST":
+            # store as global variable or pass to method
+            newterm = flask.request.form.get("term")
+            newlocation = flask.request.form.get("location")
 
-        restaurantInfo = getRestaurant(newterm, newlocation)
-        name = restaurantInfo[0]  # biz name
-        image = restaurantInfo[1]  # biz image
-        location = restaurantInfo[2]  # biz location
+            restaurantInfo = getRestaurant(newterm, newlocation)
+            name = restaurantInfo[0]  # biz name
+            image = restaurantInfo[1]  # biz image
+            location = restaurantInfo[2]  # biz location
+
+        else:
+            (name, image, location) = (None, None, None)
+            return flask.redirect(flask.url_for("search"))
 
         return flask.render_template(
             "search.html",
+            search_query=search_query,
             term=term,
             location=location,
             image=image,

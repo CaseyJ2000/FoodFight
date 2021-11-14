@@ -30,12 +30,14 @@
     <!-- <h2> Results </h2> -->
 
     <!-- Get length of results and print -->
+    {% if search_query %}
     {%for i in range (0, 20)%}
     <h2>{{ name [i] }} </h2>
     <div class="box">
         <img src="{{ image [i]}}" width=300 height=300 />
     </div class="box">
     {% endfor %}
+    {% endif %}
 
     </section>
 </body>
