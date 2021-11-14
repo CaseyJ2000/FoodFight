@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <form action="/search_results" method="POST" class="search-box">
+        <h2> SEARCH </h2>
+        <input type="text" size="30" name="term" placeholder="sushi, coffee, etc">
+        <input type="text" size="30" name="location" placeholder="city, state, zipcode">
+        <input type="submit" value="Search">
+    </form>
+    <h2> Top Results </h2>
+
+    <!-- Get length of results and print -->
+
+    <form action="/like" method="POST" class="search-box">
+        <input type="submit" value="Like">
+    </form>
+    
+    {%for i in range (0, 20)%}
+    <h2>{{ name [i] }} </h2>
+    <div>
+        <img src="{{ image [i] }}" width=300 height=300 />
+    </div>
+    {% endfor %}
+
+</body>
+
+</html>
