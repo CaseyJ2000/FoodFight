@@ -14,6 +14,7 @@ from flask_login import (
 import flask
 from requests.api import request
 from werkzeug.security import generate_password_hash, check_password_hash
+import re
 
 from yelp import getRestaurant
 
@@ -61,63 +62,54 @@ def load_user(user_name):
 @app.route("/menu")
 @login_required
 def menu():
-
     """Loads menu webpage"""
     return flask.render_template("menu.html")
 
 
-@app.route("/search")
-@login_required
-def search():
-    term = "Cheesecake"
-    location = "NYC"
-    restaurantInfo = getRestaurant(term, location)
-    name = restaurantInfo[0]  # biz name
-    image = restaurantInfo[1]  # biz image
-    location = restaurantInfo[2]  # biz location
-    length = len(name)
-
-    """Loads search webpage"""
-    return flask.render_template(
-        "search.html", image=image, location=location, name=name, length=length
-    )
-
-
-@app.route("/search_results", methods=["GET", "POST"])
+@app.route("/search", methods=["GET", "POST"])
 @login_required
 def search_results():
-    term = "Cheesecake"
-    location = "NYC"
     if flask.request.method == "POST":
-        # store as global variable or pass to method
         newterm = flask.request.form.get("term")
         newlocation = flask.request.form.get("location")
 
         restaurantInfo = getRestaurant(newterm, newlocation)
-        name = restaurantInfo[0]  # biz name
-        image = restaurantInfo[1]  # biz image
-        location = restaurantInfo[2]  # biz location
+        name = restaurantInfo[0]
+        image = restaurantInfo[1]
+        location = restaurantInfo[2]
 
         return flask.render_template(
             "search.html",
-            term=term,
+            search_query=True,
             location=location,
             image=image,
             name=name,
         )
 
+    return flask.render_template("search.html")
+
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     """Endpoint for signup"""
-    if flask.request.method == "POST":
-        username = flask.request.form.get("username")
-        password = flask.request.form.get("password")
+    if flask.request.method == 'POST':
+        username = flask.request.form.get('username')
+        password = flask.request.form.get('password')
+        repeatedPassword = flask.request.form.get('repeatedPassword')
 
+        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        if (not (re.fullmatch(regex, username))):
+            flask.flash("Incorrect email format")
+            return flask.redirect(flask.url_for('signup'))
+
+        if (not (password == repeatedPassword)):
+            flask.flash("Passwords do not match")
+            return flask.redirect(flask.url_for('signup'))
         user = User.query.filter_by(username=username).first()
         if user:
-            flask.flash("Username taken")
-            return flask.redirect(flask.url_for("signup"))
+            flask.flash(
+                "Email already in use, please retry with a different email!")
+            return flask.redirect(flask.url_for('signup'))
 
         new_user = User(
             username=username,
@@ -142,7 +134,7 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if not user or not check_password_hash(user.password, password):
-            flask.flash("Username or password bad")
+            flask.flash("Incorrect Username or Password. Try again!")
             return flask.redirect(flask.url_for("login"))
         login_user(user)
         return flask.redirect(flask.url_for("menu"))
@@ -159,6 +151,6 @@ def main():
 
 
 if __name__ == "__main__":
-    app.run(
-        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8081")), debug=True
-    )
+    app.run(host=os.getenv("IP", "0.0.0.0"),
+            port=int(os.getenv("PORT", "8081")),
+            debug=True)
