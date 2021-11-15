@@ -98,7 +98,7 @@ def search_results():
 @app.route("/like", methods=["POST"])
 def like():
     business_id = flask.request.form.get("Like")
-
+    getRestaurant(business_id, business_id)
     # try:
     #     access_token = getRestaurant()
     #     return flask.redirect(flask.url_for("index"))
@@ -106,7 +106,7 @@ def like():
     username = current_user.username
     db.session.add(liked_biz(business_id=business_id, username=username))
     db.session.commit()
-    return flask.redirect(flask.url_for("search"))
+    return flask.render_template("search.html")
 
 
 @app.route("/signup", methods=["POST", "GET"])
