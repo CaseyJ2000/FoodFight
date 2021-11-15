@@ -119,8 +119,7 @@ def like():
         return flask.redirect(flask.request.referrer)
     username = current_user.username
     liked_restaurants = liked_biz.query.filter_by(
-        username=username, business_id=business_id
-    ).first()
+        username=username, business_id=business_id).first()
     if not liked_restaurants:
         db.session.add(liked_biz(business_id=business_id, username=username))
         db.session.commit()
@@ -145,8 +144,9 @@ def signup():
             return flask.redirect(flask.url_for("signup"))
         user = User.query.filter_by(username=username).first()
         if user:
-            flask.flash("Email already in use, please retry with a different email!")
-            return flask.redirect(flask.url_for("signup"))
+            flask.flash(
+                "Email already in use, please retry with a different email!")
+            return flask.redirect(flask.url_for('signup'))
 
         new_user = User(
             username=username,
@@ -172,7 +172,8 @@ def login():
 
         if not user or not check_password_hash(user.password, password):
             flask.flash("Incorrect Username or Password. Try again!")
-            return flask.redirect(flask.url_for("login"))
+            return flask.redirect(flask.url_for('login'))
+
         login_user(user)
         return flask.redirect(flask.url_for("menu"))
     else:
@@ -188,6 +189,6 @@ def main():
 
 
 if __name__ == "__main__":
-    app.run(
-        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8081")), debug=True
-    )
+    app.run(host=os.getenv("IP", "0.0.0.0"),
+            port=int(os.getenv("PORT", "8081")),
+            debug=True)
