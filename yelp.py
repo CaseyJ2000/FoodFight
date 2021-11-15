@@ -21,13 +21,15 @@ def getRestaurant(term, location):
     response = requests.get(url=BASE_URL, params=PARAMETERS, headers=HEADERS)
 
     data = response.json()
-    if term == "" and location == "":
+
+    if not data.get("businesses"):
+        raise ValueError("no results found")
+    elif term == "" and location == "":
         raise ValueError("term and location empty")
     elif term == "":
         raise ValueError("term empty")
     elif location == "":
         raise ValueError("location empty")
-
     if type(location) == str and type(term) == str:
         id = []
         name = []
@@ -47,4 +49,4 @@ def getRestaurant(term, location):
         # biz_name = name
         # biz_image = image
         # biz_location = location
-        return (name, image, location, id)
+    return (name, image, location, id)
