@@ -42,7 +42,7 @@ class User(UserMixin, db.Model):
 
 
 class liked_biz(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Integer, primary_key=True)
     business_id = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(80), nullable=False)
 
@@ -94,7 +94,7 @@ def signup():
 
 @app.route("/like", methods=["POST"])
 def like():
-    business_id = flask.request.form.get("Like")
+    name = flask.request.form.get("Like")
 
     # try:
     #     access_token = getRestaurant()
@@ -104,7 +104,7 @@ def like():
     #     return flask.redirect(flask.url_for("index"))
 
     username = current_user.username
-    db.session.add(liked_biz(business_id=business_id, username=username))
+    db.session.add(liked_biz(name=name, username=username))
     db.session.commit()
     return flask.redirect(flask.url_for("search"))
 
@@ -120,10 +120,14 @@ def search():
     location = restaurantInfo[2]  # biz location
     length = len(name)
 
-    """Loads search webpage"""
-    return flask.render_template(
-        "search.html", image=image, location=location, name=name, length=length
-    )
+    if not term or not location:
+        flask.flash("Please input valid term and location. Try again!")
+        return flask.redirect(flask.url_for("search"))
+    else:
+        """Loads search webpage"""
+        return flask.render_template(
+            "search.html", image=image, location=location, name=name, length=length
+        )
 
 
 @app.route("/search_results", methods=["GET", "POST"])

@@ -25,18 +25,27 @@
             <input type="submit" value="Search" class="search-button">
         </div>
         </div>
+        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                          <ul class="flashes">
+                        {% for messages in messages %}
+                          <center><p style="color: red;">{{ messages }}</p></center>
+                        {%endfor%}
+                          </ul>
+                        {% endif %}
+                    {% endwith %}
     </form>
 
     <!-- <h2> Results </h2> -->
 
     <!-- Get length of results and print -->
     {%for i in range (0, 20)%}
-    <form action="/like" method="POST" class="search-box">
-        <input type="submit" value="Like">
-    <h2>{{ name [i] }} </h2>
+    <h2>{{ name [i] }}</h2>
     <div class="box">
         <img src="{{ image [i]}}" width=300 height=300 />
     </div class="box">
+    <form action="/like" method="POST" class="search-box">
+        <input type="submit" name = " {{ id [i] }}" value="Like">
     {% endfor %}
 
     </section>
