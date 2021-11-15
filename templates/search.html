@@ -7,6 +7,15 @@
 
 <body>
 
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flashes">
+        {% for messages in messages %}
+        <p style="color:red;">{{ messages}}</p>
+        {%endfor%}
+    </ul>
+    {% endif %}
+    {% endwith %}
     <form action="/search" method="POST" class="search-box">
         <div class="search">
             <div class="left-side">
@@ -28,12 +37,12 @@
 
     {% if search_query %}
     {%for i in range (0, 20)%}
+    <form action="/like" method="POST" class="search-box"></form>
     <h2>{{ name [i] }} </h2>
     <div class="box">
         <img src="{{ image [i]}}" width=300 height=300 />
-    </div class="box">
-    <form action="/like" method="POST" class="search-box">
-        <input type="submit" name="Like" value="{{ name [i] }}">
+    </div>
+    <input type="submit" name="Like" value="{{ name [i] }}" Like>
     </form>
     {% endfor %}
     {% endif %}
