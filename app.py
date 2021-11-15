@@ -1,5 +1,7 @@
 """Loads the app"""
 import os
+from flask.templating import render_template
+import requests
 from dotenv import load_dotenv, find_dotenv
 from yelp import getRestaurant
 from flask_sqlalchemy import SQLAlchemy
@@ -11,7 +13,11 @@ from flask_login import (
     login_required,
 )
 import flask
+from requests.api import request
 from werkzeug.security import generate_password_hash, check_password_hash
+import re
+
+from yelp import getRestaurant
 
 load_dotenv(find_dotenv())
 
@@ -67,16 +73,48 @@ def menu():
     return flask.render_template("menu.html")
 
 
+@app.route("/search", methods=["GET", "POST"])
+@login_required
+def search_results():
+    if flask.request.method == "POST":
+        newterm = flask.request.form.get("term")
+        newlocation = flask.request.form.get("location")
+
+        restaurantInfo = getRestaurant(newterm, newlocation)
+        name = restaurantInfo[0]
+        image = restaurantInfo[1]
+        location = restaurantInfo[2]
+
+        return flask.render_template(
+            "search.html",
+            search_query=True,
+            location=location,
+            image=image,
+            name=name,
+        )
+
+    return flask.render_template("search.html")
+
+
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     """Endpoint for signup"""
     if flask.request.method == "POST":
         username = flask.request.form.get("username")
         password = flask.request.form.get("password")
+        repeatedPassword = flask.request.form.get("repeatedPassword")
 
+        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
+        if not (re.fullmatch(regex, username)):
+            flask.flash("Incorrect email format")
+            return flask.redirect(flask.url_for("signup"))
+
+        if not (password == repeatedPassword):
+            flask.flash("Passwords do not match")
+            return flask.redirect(flask.url_for("signup"))
         user = User.query.filter_by(username=username).first()
         if user:
-            flask.flash("Username taken")
+            flask.flash("Email already in use, please retry with a different email!")
             return flask.redirect(flask.url_for("signup"))
 
         new_user = User(
@@ -92,68 +130,6 @@ def signup():
         return flask.render_template("signup.html")
 
 
-@app.route("/like", methods=["POST"])
-def like():
-    name = flask.request.form.get("Like")
-
-    # try:
-    #     access_token = getRestaurant()
-    #     get(business_id, access_token)
-    # except Exception:
-    #     flask.flash("Invalid artist ID entered")
-    #     return flask.redirect(flask.url_for("index"))
-
-    username = current_user.username
-    db.session.add(liked_biz(name=name, username=username))
-    db.session.commit()
-    return flask.redirect(flask.url_for("search"))
-
-
-@app.route("/search")
-@login_required
-def search():
-    term = "Cheesecake"
-    location = "NYC"
-    restaurantInfo = getRestaurant(term, location)
-    name = restaurantInfo[0]  # biz name
-    image = restaurantInfo[1]  # biz image
-    location = restaurantInfo[2]  # biz location
-    length = len(name)
-
-    if not term or not location:
-        flask.flash("Please input valid term and location. Try again!")
-        return flask.redirect(flask.url_for("search"))
-    else:
-        """Loads search webpage"""
-        return flask.render_template(
-            "search.html", image=image, location=location, name=name, length=length
-        )
-
-
-@app.route("/search_results", methods=["GET", "POST"])
-@login_required
-def search_results():
-    term = "Cheesecake"
-    location = "NYC"
-    if flask.request.method == "POST":
-        # store as global variable or pass to method
-        newterm = flask.request.form.get("term")
-        newlocation = flask.request.form.get("location")
-
-        restaurantInfo = getRestaurant(newterm, newlocation)
-        name = restaurantInfo[0]  # biz name
-        image = restaurantInfo[1]  # biz image
-        location = restaurantInfo[2]  # biz location
-
-        return flask.render_template(
-            "search.html",
-            term=term,
-            location=location,
-            image=image,
-            name=name,
-        )
-
-
 @app.route("/login", methods=["POST", "GET"])
 def login():
     """Endpoint for login"""
@@ -164,7 +140,7 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if not user or not check_password_hash(user.password, password):
-            flask.flash("Username or password bad")
+            flask.flash("Incorrect Username or Password. Try again!")
             return flask.redirect(flask.url_for("login"))
         login_user(user)
         return flask.redirect(flask.url_for("menu"))

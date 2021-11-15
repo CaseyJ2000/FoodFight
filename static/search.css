@@ -1,0 +1,95 @@
+
+.box {
+    flex:1 1 30rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+    border:.1rem solid rgba(0,0,0,.3);
+    cursor: pointer;
+    border-radius: .5rem;
+}
+
+.search {
+
+    width: 960px;
+    font-size: 0;
+    line-height: normal;
+    margin-bottom: 10px;
+  }
+
+  .field-wrapper {
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  .field {
+    display: inline-block;
+    box-sizing: border-box;
+    font-size: 18px;
+    padding: 11px 0 14px 58px;
+    outline: none;
+    border: 0;
+    border-radius: 4px;
+  }
+
+  .field-title {
+    position: absolute;
+    top: -30.5px;
+    left: 11px;
+    font-size: 18px;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #666;
+    z-index: 999;
+  }
+
+  .field-title.find {
+    position: absolute;
+    top: -33px;
+  }
+
+  .left-side {
+    position: relative;
+    display: inline-block;
+    width: 480px;
+    box-sizing: border-box;
+    vertical-align: middle;
+  }
+
+  .right-side {
+    display: inline-block;
+    width: 417px;
+    box-sizing: border-box;
+    margin-left: 0;
+    vertical-align: middle;
+  }
+
+  .field.request {
+    position: relative;
+    display: inline-block;
+    width: inherit;
+    box-sizing: border-box;
+    font-size: 18px;
+    outline: none;
+    border: 0;
+    border-radius: 4px 0 0 4px;
+  }
+
+  .search-button {
+    display: inline-block;
+    width: 63px;
+    height: 45px;
+    box-sizing: border-box;
+    background-color: #dd3675;
+    background-image: url(https://s26.postimg.org/v8mlp8w49/search.png);
+    background-repeat: no-repeat;
+    background-position: 17px 8px;
+    color: #fff;
+    font-size: 0;
+    vertical-align: top;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .search-button:hover {
+    background: #b44593;
+  }
