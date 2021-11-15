@@ -78,7 +78,22 @@ def search_results():
         newterm = flask.request.form.get("term")
         newlocation = flask.request.form.get("location")
 
-        restaurantInfo = getRestaurant(newterm, newlocation)
+        try:
+            restaurantInfo = getRestaurant(newterm, newlocation)
+        except KeyError:
+            errorMsg = ""
+
+            if newterm == "" and newlocation == "":
+                errorMsg = "term and location empty"
+            elif newterm == "":
+                errorMsg = "term empty"
+            elif newlocation == "":
+                errorMsg = "location empty"
+            else:
+                errorMsg = "no results found"
+
+            return flask.render_template("error.html", errorMsg=errorMsg)
+
         name = restaurantInfo[0]
         image = restaurantInfo[1]
         location = restaurantInfo[2]
