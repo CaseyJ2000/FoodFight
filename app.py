@@ -46,6 +46,12 @@ class User(UserMixin, db.Model):
         return self.username
 
 
+class liked_biz(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column(db.String(80), nullable=False)
+    username = db.Column(db.String(80), nullable=False)
+
+
 db.create_all()
 
 login_manager = LoginManager()
@@ -89,27 +95,40 @@ def search_results():
     return flask.render_template("search.html")
 
 
+@app.route("/like", methods=["POST"])
+def like():
+    business_id = flask.request.form.get("Like")
+
+    # try:
+    #     access_token = getRestaurant()
+    #     return flask.redirect(flask.url_for("index"))
+
+    username = current_user.username
+    db.session.add(liked_biz(business_id=business_id, username=username))
+    db.session.commit()
+    return flask.redirect(flask.url_for("search"))
+
+
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     """Endpoint for signup"""
-    if flask.request.method == 'POST':
-        username = flask.request.form.get('username')
-        password = flask.request.form.get('password')
-        repeatedPassword = flask.request.form.get('repeatedPassword')
+    if flask.request.method == "POST":
+        username = flask.request.form.get("username")
+        password = flask.request.form.get("password")
+        repeatedPassword = flask.request.form.get("repeatedPassword")
 
-        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-        if (not (re.fullmatch(regex, username))):
+        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
+        if not (re.fullmatch(regex, username)):
             flask.flash("Incorrect email format")
-            return flask.redirect(flask.url_for('signup'))
+            return flask.redirect(flask.url_for("signup"))
 
-        if (not (password == repeatedPassword)):
+        if not (password == repeatedPassword):
             flask.flash("Passwords do not match")
-            return flask.redirect(flask.url_for('signup'))
+            return flask.redirect(flask.url_for("signup"))
         user = User.query.filter_by(username=username).first()
         if user:
-            flask.flash(
-                "Email already in use, please retry with a different email!")
-            return flask.redirect(flask.url_for('signup'))
+            flask.flash("Email already in use, please retry with a different email!")
+            return flask.redirect(flask.url_for("signup"))
 
         new_user = User(
             username=username,
@@ -151,6 +170,6 @@ def main():
 
 
 if __name__ == "__main__":
-    app.run(host=os.getenv("IP", "0.0.0.0"),
-            port=int(os.getenv("PORT", "8081")),
-            debug=True)
+    app.run(
+        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8081")), debug=True
+    )

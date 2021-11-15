@@ -32,10 +32,11 @@
     <div class="box">
         <img src="{{ image [i]}}" width=300 height=300 />
     </div class="box">
+    <form action="/like" method="POST" class="search-box">
+        <input type="submit" name="Like" value="Like">
+    </form>
     {% endfor %}
     {% endif %}
-
-    </section>
 </body>
 
 </html>
