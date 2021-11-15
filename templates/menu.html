@@ -2,12 +2,27 @@
 <html>
 
 <head>
-
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='menu.css' ) }} />
 </head>
 
 <body>
-    <p>Im the menu page</p>
-    <a href="/search"> <button type="button"> Add Liked Restaurants </button></a>
+    <!-- <p>Im the menu page</p>
+    <a href="/search"> <button type="button"> Add Liked Restaurants </button></a> -->
+    <div class="nav">
+        <input type="checkbox">
+        <span></span>
+        <span></span>
+        <div class="text-center">
+            <img src="http://cdn.onlinewebfonts.com/svg/img_481531.png" style="width: 185px;" alt="logo">
+            <h4>FoodFight</h4>
+        </div>
+        <div class="menu">
+            <li><a href="/search">About</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/search">Create a Party</a></li>
+            <li><a href="/search">Profile</a></li>
+        </div>
+    </div>
 
 </body>
 

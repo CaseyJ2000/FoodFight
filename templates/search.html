@@ -7,8 +7,7 @@
 
 <body>
 
-    <form action="/search_results" method="POST" class="search-box">
-        <!-- <h2> SEARCH </h2> -->
+    <form action="/search" method="POST" class="search-box">
         <div class="search">
             <div class="left-side">
                 <input type="text" size="30" name="term" placeholder="sushi, coffee, etc" class="field request">
@@ -17,7 +16,7 @@
                 </div>
             </div>
             <div class="right-side">
-                <input type="text" size="30" name="location" placeholder="city, state, zipcode" class="field request">
+                <input type="text" size="30" name="location" placeholder="city, zipcode" class="field request">
                 <div class="field-wrapper">
                     <span class="field-title near">Near</span>
                 </div>
@@ -25,30 +24,19 @@
             <input type="submit" value="Search" class="search-button">
         </div>
         </div>
-        <!-- {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                          <ul class="flashes">
-                        {% for messages in messages %}
-                          <center><p style="color: red;">{{ messages }}</p></center>
-                        {%endfor%}
-                          </ul>
-                        {% endif %}
-                    {% endwith %} -->
     </form>
 
-    <!-- <h2> Results </h2> -->
-
-    <!-- Get length of results and print -->
+    {% if search_query %}
     {%for i in range (0, 20)%}
-    <h2>{{ name [i] }}</h2>
+    <h2>{{ name [i] }} </h2>
     <div class="box">
         <img src="{{ image [i]}}" width=300 height=300 />
     </div class="box">
     <form action="/like" method="POST" class="search-box">
-        <input type="submit" name="Like" value="{{ name [i] }}" >
+        <input type="submit" name="Like" value="{{ name [i] }}">
     </form>
     {% endfor %}
-
+    {% endif %}
 </body>
 
 </html>

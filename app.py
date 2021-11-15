@@ -3,7 +3,6 @@ import os
 from flask.templating import render_template
 import requests
 from dotenv import load_dotenv, find_dotenv
-from yelp import getRestaurant
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     login_user,
@@ -73,20 +72,6 @@ def menu():
     return flask.render_template("menu.html")
 
 
-@app.route("/like", methods=["POST"])
-def like():
-    business_id = flask.request.form.get("Like")
-
-    # try:
-    #     access_token = getRestaurant()
-    #     return flask.redirect(flask.url_for("index"))
-
-    username = current_user.username
-    db.session.add(liked_biz(business_id=business_id, username=username))
-    db.session.commit()
-    return flask.redirect(flask.url_for("search"))
-
-
 @app.route("/search", methods=["GET", "POST"])
 @login_required
 def search_results():
@@ -108,6 +93,20 @@ def search_results():
         )
 
     return flask.render_template("search.html")
+
+
+@app.route("/like", methods=["POST"])
+def like():
+    business_id = flask.request.form.get("Like")
+
+    # try:
+    #     access_token = getRestaurant()
+    #     return flask.redirect(flask.url_for("index"))
+
+    username = current_user.username
+    db.session.add(liked_biz(business_id=business_id, username=username))
+    db.session.commit()
+    return flask.redirect(flask.url_for("search_results"))
 
 
 @app.route("/signup", methods=["POST", "GET"])
