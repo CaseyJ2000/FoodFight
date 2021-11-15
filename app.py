@@ -48,7 +48,7 @@ class User(UserMixin, db.Model):
 
 
 class liked_biz(db.Model):
-    name = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     business_id = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(80), nullable=False)
 
@@ -71,6 +71,20 @@ def load_user(user_name):
 def menu():
     """Loads menu webpage"""
     return flask.render_template("menu.html")
+
+
+@app.route("/like", methods=["POST"])
+def like():
+    business_id = flask.request.form.get("Like")
+
+    # try:
+    #     access_token = getRestaurant()
+    #     return flask.redirect(flask.url_for("index"))
+
+    username = current_user.username
+    db.session.add(liked_biz(business_id=business_id, username=username))
+    db.session.commit()
+    return flask.redirect(flask.url_for("search"))
 
 
 @app.route("/search", methods=["GET", "POST"])

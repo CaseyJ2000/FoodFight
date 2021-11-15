@@ -25,7 +25,7 @@
             <input type="submit" value="Search" class="search-button">
         </div>
         </div>
-        {% with messages = get_flashed_messages() %}
+        <!-- {% with messages = get_flashed_messages() %}
                         {% if messages %}
                           <ul class="flashes">
                         {% for messages in messages %}
@@ -33,7 +33,7 @@
                         {%endfor%}
                           </ul>
                         {% endif %}
-                    {% endwith %}
+                    {% endwith %} -->
     </form>
 
     <!-- <h2> Results </h2> -->
@@ -45,10 +45,10 @@
         <img src="{{ image [i]}}" width=300 height=300 />
     </div class="box">
     <form action="/like" method="POST" class="search-box">
-        <input type="submit" name = " {{ name [i] }}" value="Like">
+        <input type="submit" name="Like" value="{{ name [i] }}" >
+    </form>
     {% endfor %}
 
-    </section>
 </body>
 
 </html>
