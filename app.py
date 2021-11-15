@@ -14,7 +14,7 @@ from flask_login import (
 import flask
 from requests.api import request
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import re
 from yelp import getRestaurant
 
 load_dotenv(find_dotenv())
@@ -45,6 +45,12 @@ class User(UserMixin, db.Model):
         return self.username
 
 
+class liked_biz(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column(db.String(80), nullable=False)
+    username = db.Column(db.String(80), nullable=False)
+
+
 db.create_all()
 
 login_manager = LoginManager()
@@ -61,57 +67,63 @@ def load_user(user_name):
 @app.route("/menu")
 @login_required
 def menu():
-
     """Loads menu webpage"""
     return flask.render_template("menu.html")
 
 
-@app.route("/search")
-@login_required
-def search():
-    term = "Cheesecake"
-    location = "NYC"
-    restaurantInfo = getRestaurant(term, location)
-    name = restaurantInfo[0]  # biz name
-    image = restaurantInfo[1]  # biz image
-    location = restaurantInfo[2]  # biz location
-    length = len(name)
-
-    """Loads search webpage"""
-    return flask.render_template(
-        "search.html", image=image, location=location, name=name, length=length
-    )
-
-
-@app.route("/search_results", methods=["GET", "POST"])
+@app.route("/search", methods=["GET", "POST"])
 @login_required
 def search_results():
-    term = "Cheesecake"
-    location = "NYC"
-    search_query = len(term) > 0
-    if search_query:
-        if flask.request.method == "POST":
-            # store as global variable or pass to method
-            newterm = flask.request.form.get("term")
-            newlocation = flask.request.form.get("location")
+    if flask.request.method == "POST":
+        newterm = flask.request.form.get("term")
+        newlocation = flask.request.form.get("location")
 
+        try:
             restaurantInfo = getRestaurant(newterm, newlocation)
-            name = restaurantInfo[0]  # biz name
-            image = restaurantInfo[1]  # biz image
-            location = restaurantInfo[2]  # biz location
+        except KeyError:
+            errorMsg = ""
 
-        else:
-            (name, image, location) = (None, None, None)
-            return flask.redirect(flask.url_for("search"))
+            if newterm == "" and newlocation == "":
+                errorMsg = "term and location empty"
+            elif newterm == "":
+                errorMsg = "term empty"
+            elif newlocation == "":
+                errorMsg = "location empty"
+            else:
+                errorMsg = "no results found"
+
+            return flask.render_template("error.html", errorMsg=errorMsg)
+
+        name = restaurantInfo[0]
+        image = restaurantInfo[1]
+        location = restaurantInfo[2]
+        biz_id = restaurantInfo[3]
 
         return flask.render_template(
             "search.html",
-            search_query=search_query,
-            term=term,
+            search_query=True,
             location=location,
             image=image,
             name=name,
+            biz_id=biz_id,
         )
+
+    return flask.render_template("search.html")
+
+
+@app.route("/like", methods=["POST"])
+def like():
+
+    business_id = flask.request.form.get("Like")
+    if business_id == "":
+        return flask.redirect(flask.request.referrer)
+    username = current_user.username
+    liked_restaurants = liked_biz.query.filter_by(
+        username=username, business_id=business_id).first()
+    if not liked_restaurants:
+        db.session.add(liked_biz(business_id=business_id, username=username))
+        db.session.commit()
+    return flask.redirect(flask.request.referrer)
 
 
 @app.route("/signup", methods=["POST", "GET"])
@@ -120,16 +132,21 @@ def signup():
     if flask.request.method == "POST":
         username = flask.request.form.get("username")
         password = flask.request.form.get("password")
+        repeatedPassword = flask.request.form.get("repeatedPassword")
 
+        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
+        if not (re.fullmatch(regex, username)):
+            flask.flash("Incorrect email format")
+            return flask.redirect(flask.url_for("signup"))
+
+        if not (password == repeatedPassword):
+            flask.flash("Passwords do not match")
+            return flask.redirect(flask.url_for("signup"))
         user = User.query.filter_by(username=username).first()
         if user:
-<<<<<<< HEAD
-            flask.flash("Email already in use, please retry with a different email!")
+            flask.flash(
+                "Email already in use, please retry with a different email!")
             return flask.redirect(flask.url_for('signup'))
-=======
-            flask.flash("Username taken")
-            return flask.redirect(flask.url_for("signup"))
->>>>>>> f0c5318d7ad83af3df899c9716d5e86f831f0967
 
         new_user = User(
             username=username,
@@ -154,13 +171,9 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if not user or not check_password_hash(user.password, password):
-<<<<<<< HEAD
             flask.flash("Incorrect Username or Password. Try again!")
             return flask.redirect(flask.url_for('login'))
-=======
-            flask.flash("Username or password bad")
-            return flask.redirect(flask.url_for("login"))
->>>>>>> f0c5318d7ad83af3df899c9716d5e86f831f0967
+
         login_user(user)
         return flask.redirect(flask.url_for("menu"))
     else:
@@ -176,10 +189,6 @@ def main():
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-    app.run(debug=True)
-=======
-    app.run(
-        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8081")), debug=True
-    )
->>>>>>> f0c5318d7ad83af3df899c9716d5e86f831f0967
+    app.run(host=os.getenv("IP", "0.0.0.0"),
+            port=int(os.getenv("PORT", "8081")),
+            debug=True)
