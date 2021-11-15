@@ -77,6 +77,9 @@ def search_results():
         name = restaurantInfo[0]
         image = restaurantInfo[1]
         location = restaurantInfo[2]
+        id = restaurantInfo[3]
+        rating = restaurantInfo[4]
+        category = restaurantInfo[5]
 
         return flask.render_template(
             "search.html",
@@ -84,6 +87,9 @@ def search_results():
             location=location,
             image=image,
             name=name,
+            id=id,
+            rating=rating,
+            category=category,
         )
 
     return flask.render_template("search.html")
@@ -92,24 +98,23 @@ def search_results():
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     """Endpoint for signup"""
-    if flask.request.method == 'POST':
-        username = flask.request.form.get('username')
-        password = flask.request.form.get('password')
-        repeatedPassword = flask.request.form.get('repeatedPassword')
+    if flask.request.method == "POST":
+        username = flask.request.form.get("username")
+        password = flask.request.form.get("password")
+        repeatedPassword = flask.request.form.get("repeatedPassword")
 
-        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-        if (not (re.fullmatch(regex, username))):
+        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
+        if not (re.fullmatch(regex, username)):
             flask.flash("Incorrect email format")
-            return flask.redirect(flask.url_for('signup'))
+            return flask.redirect(flask.url_for("signup"))
 
-        if (not (password == repeatedPassword)):
+        if not (password == repeatedPassword):
             flask.flash("Passwords do not match")
-            return flask.redirect(flask.url_for('signup'))
+            return flask.redirect(flask.url_for("signup"))
         user = User.query.filter_by(username=username).first()
         if user:
-            flask.flash(
-                "Email already in use, please retry with a different email!")
-            return flask.redirect(flask.url_for('signup'))
+            flask.flash("Email already in use, please retry with a different email!")
+            return flask.redirect(flask.url_for("signup"))
 
         new_user = User(
             username=username,
@@ -151,6 +156,6 @@ def main():
 
 
 if __name__ == "__main__":
-    app.run(host=os.getenv("IP", "0.0.0.0"),
-            port=int(os.getenv("PORT", "8081")),
-            debug=True)
+    app.run(
+        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8081")), debug=True
+    )
