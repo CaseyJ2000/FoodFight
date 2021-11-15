@@ -106,7 +106,7 @@ def like():
     username = current_user.username
     db.session.add(liked_biz(business_id=business_id, username=username))
     db.session.commit()
-    return flask.render_template("search.html")
+    return flask.redirect(flask.url_for("search_results"))
 
 
 @app.route("/signup", methods=["POST", "GET"])
