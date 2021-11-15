@@ -22,14 +22,14 @@ def getRestaurant(term, location):
 
     data = response.json()
 
-    if not data.get("businesses"):
-        raise ValueError("no results found")
-    elif term == "" and location == "":
+    if term == "" and location == "":
         raise ValueError("term and location empty")
     elif term == "":
         raise ValueError("term empty")
     elif location == "":
         raise ValueError("location empty")
+    elif not data.get("businesses"):
+        raise ValueError("no results found")
     if type(location) == str and type(term) == str:
         id = []
         name = []
