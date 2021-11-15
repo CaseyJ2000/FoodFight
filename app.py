@@ -15,7 +15,6 @@ import flask
 from requests.api import request
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
-
 from yelp import getRestaurant
 
 load_dotenv(find_dotenv())
