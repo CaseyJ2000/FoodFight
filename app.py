@@ -101,7 +101,8 @@ def search_results():
 def like():
 
     business_id = flask.request.form.get("Like")
-
+    if business_id == "":
+        return flask.redirect(flask.request.referrer)
     username = current_user.username
     liked_restaurants = liked_biz.query.filter_by(
         username=username, business_id=business_id
@@ -109,9 +110,6 @@ def like():
     if not liked_restaurants:
         db.session.add(liked_biz(business_id=business_id, username=username))
         db.session.commit()
-
-    # return flask.redirect(flask.url_for("home"))
-    # return flask.render_template("search.html")
     return flask.redirect(flask.request.referrer)
 
 
