@@ -1,41 +1,47 @@
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
-    <link href="/static/search.css" rel="stylesheet" />
-  </head>
-  <body>
-    <div class="s01">
-      <form action="/search_results" method="POST">
-        <div class="inner-form">
-          <div class="input-field first-wrap">
-            <input id="search" name="term" type="text" placeholder="What kind of food are you looking for?" />
-          </div>
-          <div class="input-field second-wrap">
-            <input id="location" name="location" type="text" placeholder="City, State, Zip, Whatever" />
-          </div>
-          <div class="input-field third-wrap">
-            <button class="btn-search" value="Search" type="submit">Search</button>
-          </div>
-        </div>
-      </form>
-    </div>
 
-    <!-- Get length of results and print -->
-    {% if search_query %}
-    {%for i in range (0, 20)%}
-    <br>
-    <div class="outerbox">
-        <div class="box">
-            <h2 class="title">{{ name [i] }} </h2>
-            <img class="food_image" src="{{ image [i]}}" width=300 height=300 />
-        </div class="box">
-    </div>
-    <br>
-    <br>
-    {% endfor %}
-    {% endif %}
-  </body>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+  <link href="/static/search.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="s01">
+    <form action="/search" method="POST">
+      <div class="inner-form">
+        <div class="input-field first-wrap">
+          <input id="search" name="term" type="text" placeholder="What kind of food are you looking for?" />
+        </div>
+        <div class="input-field second-wrap">
+          <input id="location" name="location" type="text" placeholder="City, State, Zip, Whatever" />
+        </div>
+        <div class="input-field third-wrap">
+          <button class="btn-search" value="Search" type="submit">Search</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Get length of results and print -->
+  {% if search_query %}
+  {%for i in range (0, 20)%}
+  <br>
+  <div class="outerbox">
+    <div class="box">
+      <h2 class="title">{{ name [i] }} </h2>
+      <img class="food_image" src="{{ image [i]}}" width=300 height=300 />
+      <form action="/like" method="POST" class="search-box">
+        <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
+      </form>
+    </div class="box">
+  </div>
+  <br>
+  <br>
+  {% endfor %}
+  {% endif %}
+</body>
+
 </html>
