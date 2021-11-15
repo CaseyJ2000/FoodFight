@@ -33,7 +33,7 @@
         <img src="{{ image [i]}}" width=300 height=300 />
     </div class="box">
     <form action="/like" method="POST" class="search-box">
-        <input type="submit" name="Like" value="{{ name [i] }}">
+        <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
     </form>
     {% endfor %}
     {% endif %}

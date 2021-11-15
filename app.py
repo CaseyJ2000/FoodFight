@@ -83,6 +83,7 @@ def search_results():
         name = restaurantInfo[0]
         image = restaurantInfo[1]
         location = restaurantInfo[2]
+        biz_id = restaurantInfo[3]
 
         return flask.render_template(
             "search.html",
@@ -90,6 +91,7 @@ def search_results():
             location=location,
             image=image,
             name=name,
+            biz_id=biz_id,
         )
 
     return flask.render_template("search.html")
@@ -97,16 +99,20 @@ def search_results():
 
 @app.route("/like", methods=["POST"])
 def like():
+
     business_id = flask.request.form.get("Like")
 
-    # try:
-    #     access_token = getRestaurant()
-    #     return flask.redirect(flask.url_for("index"))
-
     username = current_user.username
-    db.session.add(liked_biz(business_id=business_id, username=username))
-    db.session.commit()
-    return flask.redirect(flask.url_for("search_results"))
+    liked_restaurants = liked_biz.query.filter_by(
+        username=username, business_id=business_id
+    ).first()
+    if not liked_restaurants:
+        db.session.add(liked_biz(business_id=business_id, username=username))
+        db.session.commit()
+
+    # return flask.redirect(flask.url_for("home"))
+    # return flask.render_template("search.html")
+    return flask.redirect(flask.request.referrer)
 
 
 @app.route("/signup", methods=["POST", "GET"])

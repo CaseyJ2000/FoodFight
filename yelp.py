@@ -20,19 +20,22 @@ def getRestaurant(term, location):
     response = requests.get(url=BASE_URL, params=PARAMETERS, headers=HEADERS)
 
     data = response.json()
+    id = []
     name = []
     location = []
     image = []
 
     for i in data["businesses"]:
+        id.append(i["id"])
         name.append(i["name"])
         location.append(i["location"]["city"])
         image.append(i["image_url"])
 
-    DATA = {"name": name, "location": location, "image": image}
+    DATA = {"id": id, "name": name, "location": location, "image": image}
     datalist = []
     datalist.append(DATA)
+    biz_id = id
     biz_name = name
     biz_image = image
     biz_location = location
-    return (biz_name, biz_image, biz_location)
+    return (biz_name, biz_image, biz_location, biz_id)
