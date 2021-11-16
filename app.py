@@ -190,6 +190,16 @@ def main():
     return flask.redirect(flask.url_for("login"))
 
 
+@app.route("/about")
+def about():
+    return flask.render_template("about.html")
+
+
+@app.route("/profile")
+def profile():
+    return flask.render_template("profile.html")
+
+
 @app.route("/party", methods=["POST", "GET"])
 def get_party_rec():
 
