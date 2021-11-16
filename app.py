@@ -2,6 +2,7 @@
 import os
 from flask.templating import render_template
 import requests
+import operator
 from dotenv import load_dotenv, find_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
@@ -15,8 +16,8 @@ import flask
 from requests.api import request
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
+from yelp import getRestaurant, getRestaurantDetails
 
-from yelp import getRestaurant
 
 load_dotenv(find_dotenv())
 
@@ -27,7 +28,7 @@ if uri.startswith("postgres://"):
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = os.getenv("SECRET_KEY")
-
+NUM_OF_PARTY_RECS = 5
 db = SQLAlchemy(app)
 
 
@@ -44,6 +45,12 @@ class User(UserMixin, db.Model):
     def get_username(self):
         """Returns username"""
         return self.username
+
+
+class liked_biz(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column(db.String(80), nullable=False)
+    username = db.Column(db.String(80), nullable=False)
 
 
 db.create_all()
@@ -73,7 +80,22 @@ def search_results():
         newterm = flask.request.form.get("term")
         newlocation = flask.request.form.get("location")
 
-        restaurantInfo = getRestaurant(newterm, newlocation)
+        try:
+            restaurantInfo = getRestaurant(newterm, newlocation)
+        except KeyError:
+            errorMsg = ""
+
+            if newterm == "" and newlocation == "":
+                errorMsg = "term and location empty"
+            elif newterm == "":
+                errorMsg = "term empty"
+            elif newlocation == "":
+                errorMsg = "location empty"
+            else:
+                errorMsg = "no results found"
+
+            return flask.render_template("error.html", errorMsg=errorMsg)
+
         name = restaurantInfo[0]
         image = restaurantInfo[1]
         location = restaurantInfo[2]
@@ -89,6 +111,22 @@ def search_results():
         )
 
     return flask.render_template("search.html")
+
+
+@app.route("/like", methods=["POST"])
+def like():
+
+    business_id = flask.request.form.get("Like")
+    if business_id == "":
+        return flask.redirect(flask.request.referrer)
+    username = current_user.username
+    liked_restaurants = liked_biz.query.filter_by(
+        username=username, business_id=business_id
+    ).first()
+    if not liked_restaurants:
+        db.session.add(liked_biz(business_id=business_id, username=username))
+        db.session.commit()
+    return flask.redirect(flask.request.referrer)
 
 
 @app.route("/signup", methods=["POST", "GET"])
@@ -137,6 +175,7 @@ def login():
         if not user or not check_password_hash(user.password, password):
             flask.flash("Incorrect Username or Password. Try again!")
             return flask.redirect(flask.url_for("login"))
+
         login_user(user)
         return flask.redirect(flask.url_for("menu"))
     else:
@@ -149,6 +188,41 @@ def main():
     if current_user.is_authenticated:
         return flask.redirect(flask.url_for("menu"))
     return flask.redirect(flask.url_for("login"))
+
+
+@app.route("/party", methods=["POST", "GET"])
+def get_party_rec():
+
+    if flask.request.method == "POST":
+        people_in_party = flask.request.form.get("people_in_party")
+        party_members = people_in_party.split(" ")
+        restaurant_dict = {}
+        for user in party_members:
+            current_user = liked_biz.query.filter_by(username=user).all()
+            if current_user == []:
+                flask.flash(f"{user} could not be found")
+            for row in current_user:
+                if restaurant_dict.get(row.business_id) == None:
+                    restaurant_dict.update({row.business_id: 1})
+                else:
+                    new_amount = restaurant_dict.get(row.business_id) + 1
+                    restaurant_dict.update({row.business_id: new_amount})
+        sorted_dict = dict(
+            sorted(restaurant_dict.items(), key=operator.itemgetter(1), reverse=True)
+        )
+
+        restaurantDetails = getRestaurantDetails(sorted_dict, NUM_OF_PARTY_RECS)
+        return flask.render_template(
+            "party.html",
+            recieved_party_data=True,
+            name=restaurantDetails["name"],
+            image=restaurantDetails["image"],
+            yelp_url=restaurantDetails["yelp_url"],
+            rating=restaurantDetails["rating"],
+            length=restaurantDetails["length"],
+        )
+    else:
+        return flask.render_template("party.html")
 
 
 if __name__ == "__main__":
