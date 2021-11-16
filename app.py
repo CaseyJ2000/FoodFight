@@ -16,7 +16,7 @@ import flask
 from requests.api import request
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
-from yelp import getRestaurant
+from yelp import getRestaurant, getRestaurantDetails
 
 
 load_dotenv(find_dotenv())
@@ -28,7 +28,7 @@ if uri.startswith("postgres://"):
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = os.getenv("SECRET_KEY")
-
+NUM_OF_PARTY_RECS = 5
 db = SQLAlchemy(app)
 
 
@@ -199,6 +199,8 @@ def get_party_rec():
         restaurant_dict = {}
         for user in party_members:
             current_user = liked_biz.query.filter_by(username=user).all()
+            if current_user == []:
+                flask.flash(f"{user} could not be found")
             for row in current_user:
                 if restaurant_dict.get(row.business_id) == None:
                     restaurant_dict.update({row.business_id: 1})
@@ -208,8 +210,17 @@ def get_party_rec():
         sorted_dict = dict(
             sorted(restaurant_dict.items(), key=operator.itemgetter(1), reverse=True)
         )
-        print(sorted_dict)
-        return flask.render_template("party.html")
+
+        restaurantDetails = getRestaurantDetails(sorted_dict, NUM_OF_PARTY_RECS)
+        return flask.render_template(
+            "party.html",
+            recieved_party_data=True,
+            name=restaurantDetails["name"],
+            image=restaurantDetails["image"],
+            yelp_url=restaurantDetails["yelp_url"],
+            rating=restaurantDetails["rating"],
+            length=restaurantDetails["length"],
+        )
     else:
         return flask.render_template("party.html")
 

@@ -1,6 +1,41 @@
-<h1>I am the party page</h1>
+<html>
 
-<form action="/party" method="POST">
-    <input type="text" name="people_in_party" placeholder="People in party" />
-    <input type="submit" value="submit"></input>
-</form>
+<head>
+    <title>Create a Party</title>
+</head>
+
+<body>
+    <h1>Enter your party member's emails seperated by spaces</h1>
+
+    <form action="/party" method="POST">
+        <input type="text" name="people_in_party" placeholder="People in party" />
+        <input type="submit" value="submit"></input>
+    </form>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flashes">
+        {% for messages in messages %}
+        <p style="color:red;">{{ messages}}</p>
+        {%endfor%}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <!-- Get length of results and print -->
+    {% if recieved_party_data %}
+    {%for i in range (0, length)%}
+    <br>
+    <div>
+        <h2 class="title">{{ name [i] }} </h2>
+        <img class="food_image" src="{{ image [i] }}" width=300 height=300 />
+        <p> Rating: {{ rating[i] }}</p>
+        <a href="{{ yelp_url[i] }}">Link to Yelp Page</a>
+    </div>
+    <br>
+    <br>
+    {% endfor %}
+    {% endif %}
+</body>
+
+
+
+</html>
