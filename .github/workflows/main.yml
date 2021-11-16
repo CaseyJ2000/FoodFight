@@ -1,0 +1,35 @@
+name: Python Server CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+       
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+          
+      - name: Install dependencies
+        run: pip install -r requirements.txt 
+        
+      - name: Install linter
+        run: pip install pylint
+        
+      - name: Lint files
+        run: find . -name '*.py' -exec pylint {} \;
