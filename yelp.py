@@ -26,7 +26,6 @@ def getRestaurant(term, location):
     image = []
     rating = []
     category = []
-    hours = []
 
     for i in data["businesses"]:
         id.append(i["id"])

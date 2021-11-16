@@ -77,7 +77,7 @@ def search_results():
         name = restaurantInfo[0]
         image = restaurantInfo[1]
         location = restaurantInfo[2]
-        id = restaurantInfo[3]
+        biz_id = restaurantInfo[3]
         rating = restaurantInfo[4]
         category = restaurantInfo[5]
 
@@ -87,7 +87,7 @@ def search_results():
             location=location,
             image=image,
             name=name,
-            id=id,
+            biz_id=biz_id,
             rating=rating,
             category=category,
         )

@@ -33,11 +33,14 @@
     <h2>{{ name [i] }} </h2>
     <div class="box">
         <img src="{{ image [i]}}" width=300 height=300 />
+        <form action="/like" method="POST" class="like-box">
+            <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
+        </form>
     </div class="box">
+
     {% endfor %}
     {% endif %}
 
-    </section>
 </body>
 
 </html>
