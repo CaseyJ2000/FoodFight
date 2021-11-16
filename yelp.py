@@ -1,4 +1,5 @@
 import os
+from flask.wrappers import Response
 import requests
 import json
 import flask
@@ -13,6 +14,7 @@ CLIENT_ID = os.getenv("CLIENT_ID")
 API_KEY = os.getenv("API_KEY")
 BASE_URL = "https://api.yelp.com/v3/businesses/search"
 HEADERS = {"Authorization": "Bearer %s" % API_KEY}
+URL_ID = "https://api.yelp.com/v3/businesses/"
 
 
 def getRestaurant(term, location):
@@ -25,18 +27,38 @@ def getRestaurant(term, location):
     name = []
     location = []
     image = []
-    datalist = []
     for i in data["businesses"]:
         id.append(i["id"])
         name.append(i["name"])
         location.append(i["location"]["city"])
         image.append(i["image_url"])
 
-        # DATA = {"id": id, "name": name, "location": location, "image": image}
-        # datalist = []
-        # datalist.append(DATA)
-        # biz_id = id
-        # biz_name = name
-        # biz_image = image
-        # biz_location = location
     return (name, image, location, id)
+
+
+def getRestaurantDetails(restaurant_dict, numOfRestaurants):
+    i = 0
+    name = []
+    image = []
+    yelp_url = []
+    rating = []
+    length = len(restaurant_dict)
+    if length > numOfRestaurants:
+        length = numOfRestaurants
+    for key in restaurant_dict.keys():
+        if i == numOfRestaurants:
+            break
+        response = requests.get(url=URL_ID + key, headers=HEADERS)
+        data = response.json()
+        name.append(data["name"])
+        image.append(data["image_url"])
+        yelp_url.append(data["url"])
+        rating.append(data["rating"])
+
+    return {
+        "name": name,
+        "image": image,
+        "yelp_url": yelp_url,
+        "rating": rating,
+        "length": length,
+    }
