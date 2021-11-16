@@ -78,8 +78,6 @@ def search_results():
         image = restaurantInfo[1]
         location = restaurantInfo[2]
         biz_id = restaurantInfo[3]
-        rating = restaurantInfo[4]
-        category = restaurantInfo[5]
 
         return flask.render_template(
             "search.html",
@@ -88,8 +86,6 @@ def search_results():
             image=image,
             name=name,
             biz_id=biz_id,
-            rating=rating,
-            category=category,
         )
 
     return flask.render_template("search.html")

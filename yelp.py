@@ -24,23 +24,18 @@ def getRestaurant(term, location):
     name = []
     location = []
     image = []
-    rating = []
-    category = []
 
     for i in data["businesses"]:
         id.append(i["id"])
         name.append(i["name"])
         location.append(i["location"]["city"])
         image.append(i["image_url"])
-        rating.append(i["rating"])
-        category.append(i["categories"])
 
     DATA = {
+        "id": id,
         "name": name,
         "location": location,
         "image": image,
-        "rating": rating,
-        "category": category,
     }
 
     datalist = []
@@ -49,14 +44,10 @@ def getRestaurant(term, location):
     biz_name = name
     biz_image = image
     biz_location = location
-    biz_rating = rating
-    biz_category = category
 
     return (
         biz_name,
         biz_image,
         biz_location,
         biz_id,
-        biz_rating,
-        biz_category,
     )
