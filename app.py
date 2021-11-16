@@ -66,11 +66,93 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
+@app.route("/about")
+@login_required
+def about():
+    return flask.render_template("about.html")
+
+
+@app.route("/like", methods=["POST"])
+def like():
+    business_id = flask.request.form.get("Like")
+    if business_id == "":
+        return flask.redirect(flask.request.referrer)
+    username = current_user.username
+    liked_restaurants = liked_biz.query.filter_by(
+        username=username, business_id=business_id
+    ).first()
+    if not liked_restaurants:
+        db.session.add(liked_biz(business_id=business_id, username=username))
+        db.session.commit()
+    return flask.redirect(flask.request.referrer)
+
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    """Endpoint for login"""
+    if flask.request.method == "POST":
+        username = flask.request.form.get("username")
+        password = flask.request.form.get("password")
+
+        user = User.query.filter_by(username=username).first()
+
+        if not user or not check_password_hash(user.password, password):
+            flask.flash("Incorrect Username or Password. Try again!")
+            return flask.redirect(flask.url_for("login"))
+
+        login_user(user)
+        return flask.redirect(flask.url_for("menu"))
+    else:
+        return flask.render_template("login.html")
+
+
 @app.route("/menu")
 @login_required
 def menu():
     """Loads menu webpage"""
     return flask.render_template("menu.html")
+
+
+@app.route("/party", methods=["POST", "GET"])
+@login_required
+def get_party_rec():
+
+    if flask.request.method == "POST":
+        people_in_party = flask.request.form.get("people_in_party")
+        party_members = people_in_party.split(" ")
+        restaurant_dict = {}
+        for user in party_members:
+            current_user = liked_biz.query.filter_by(username=user).all()
+            if current_user == []:
+                flask.flash(f"{user} could not be found")
+            for row in current_user:
+                if restaurant_dict.get(row.business_id) == None:
+                    restaurant_dict.update({row.business_id: 1})
+                else:
+                    new_amount = restaurant_dict.get(row.business_id) + 1
+                    restaurant_dict.update({row.business_id: new_amount})
+        sorted_dict = dict(
+            sorted(restaurant_dict.items(), key=operator.itemgetter(1), reverse=True)
+        )
+
+        restaurantDetails = getRestaurantDetails(sorted_dict, NUM_OF_PARTY_RECS)
+        return flask.render_template(
+            "party.html",
+            recieved_party_data=True,
+            name=restaurantDetails["name"],
+            image=restaurantDetails["image"],
+            yelp_url=restaurantDetails["yelp_url"],
+            rating=restaurantDetails["rating"],
+            length=restaurantDetails["length"],
+        )
+    else:
+        return flask.render_template("party.html")
+
+
+@app.route("/profile")
+@login_required
+def profile():
+    return flask.render_template("profile.html")
 
 
 @app.route("/search", methods=["GET", "POST"])
@@ -113,22 +195,6 @@ def search_results():
     return flask.render_template("search.html")
 
 
-@app.route("/like", methods=["POST"])
-def like():
-
-    business_id = flask.request.form.get("Like")
-    if business_id == "":
-        return flask.redirect(flask.request.referrer)
-    username = current_user.username
-    liked_restaurants = liked_biz.query.filter_by(
-        username=username, business_id=business_id
-    ).first()
-    if not liked_restaurants:
-        db.session.add(liked_biz(business_id=business_id, username=username))
-        db.session.commit()
-    return flask.redirect(flask.request.referrer)
-
-
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     """Endpoint for signup"""
@@ -163,76 +229,12 @@ def signup():
         return flask.render_template("signup.html")
 
 
-@app.route("/login", methods=["POST", "GET"])
-def login():
-    """Endpoint for login"""
-    if flask.request.method == "POST":
-        username = flask.request.form.get("username")
-        password = flask.request.form.get("password")
-
-        user = User.query.filter_by(username=username).first()
-
-        if not user or not check_password_hash(user.password, password):
-            flask.flash("Incorrect Username or Password. Try again!")
-            return flask.redirect(flask.url_for("login"))
-
-        login_user(user)
-        return flask.redirect(flask.url_for("menu"))
-    else:
-        return flask.render_template("login.html")
-
-
 @app.route("/")
 def main():
     """Origin for user Login"""
     if current_user.is_authenticated:
         return flask.redirect(flask.url_for("menu"))
     return flask.redirect(flask.url_for("login"))
-
-
-@app.route("/about")
-def about():
-    return flask.render_template("about.html")
-
-
-@app.route("/profile")
-def profile():
-    return flask.render_template("profile.html")
-
-
-@app.route("/party", methods=["POST", "GET"])
-def get_party_rec():
-
-    if flask.request.method == "POST":
-        people_in_party = flask.request.form.get("people_in_party")
-        party_members = people_in_party.split(" ")
-        restaurant_dict = {}
-        for user in party_members:
-            current_user = liked_biz.query.filter_by(username=user).all()
-            if current_user == []:
-                flask.flash(f"{user} could not be found")
-            for row in current_user:
-                if restaurant_dict.get(row.business_id) == None:
-                    restaurant_dict.update({row.business_id: 1})
-                else:
-                    new_amount = restaurant_dict.get(row.business_id) + 1
-                    restaurant_dict.update({row.business_id: new_amount})
-        sorted_dict = dict(
-            sorted(restaurant_dict.items(), key=operator.itemgetter(1), reverse=True)
-        )
-
-        restaurantDetails = getRestaurantDetails(sorted_dict, NUM_OF_PARTY_RECS)
-        return flask.render_template(
-            "party.html",
-            recieved_party_data=True,
-            name=restaurantDetails["name"],
-            image=restaurantDetails["image"],
-            yelp_url=restaurantDetails["yelp_url"],
-            rating=restaurantDetails["rating"],
-            length=restaurantDetails["length"],
-        )
-    else:
-        return flask.render_template("party.html")
 
 
 if __name__ == "__main__":
