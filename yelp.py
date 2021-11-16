@@ -22,7 +22,6 @@ def getRestaurant(term, location):
 
     response = requests.get(url=BASE_URL, params=PARAMETERS, headers=HEADERS)
     data = response.json()
-
     id = []
     name = []
     location = []
