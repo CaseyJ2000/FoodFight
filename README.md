@@ -8,6 +8,7 @@
 - [Installation Requirements](#Installation-Requirements)
 - [Local Setup](#Local-Setup)
 - [Known Issues](#Known-Issues)
+- [Linting](#Linting)
 
 
 ##  App Description 
@@ -56,5 +57,7 @@ export CLIENT_ID = "<insert client id>"
 ## Known Issues
 After clicking the like button for a restaurant, you are redirected to the search page where you would need to search for restaurants again instead of it keeping you on the same page that shows all the restaurants with their corresponding like button.
 
+# Linting
+The no-member error is being ignored in pylint. This is the case because the code will still continue to run and pylint is having a false postive.
 
 README is still a work in progress
