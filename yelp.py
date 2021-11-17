@@ -1,11 +1,7 @@
+"""Handles all requests to the yelp api"""
 import os
-from flask.wrappers import Response
 import requests
-import json
-import flask
 from dotenv import load_dotenv, find_dotenv
-from requests.api import get, request
-
 
 load_dotenv(find_dotenv())
 
@@ -13,39 +9,39 @@ CLIENT_ID = os.getenv("CLIENT_ID")
 
 API_KEY = os.getenv("API_KEY")
 BASE_URL = "https://api.yelp.com/v3/businesses/search"
-HEADERS = {"Authorization": "Bearer %s" % API_KEY}
+HEADERS = {"Authorization": f"Bearer {API_KEY}"}
 URL_ID = "https://api.yelp.com/v3/businesses/"
 
 
-def getRestaurant(term, location):
-    PARAMETERS = {"term": term, "location": location}
+def get_restaurant(term, location):
+    """Method to search for restaurants"""
+    parameters = {"term": term, "location": location}
 
-    response = requests.get(url=BASE_URL, params=PARAMETERS, headers=HEADERS)
+    response = requests.get(url=BASE_URL, params=parameters, headers=HEADERS)
     data = response.json()
-    id = []
+    restaurant_ids = []
     name = []
     location = []
     image = []
     for i in data["businesses"]:
-        id.append(i["id"])
+        restaurant_ids.append(i["id"])
         name.append(i["name"])
         location.append(i["location"]["city"])
         image.append(i["image_url"])
 
-    return (name, image, location, id)
+    return (name, image, location, restaurant_ids)
 
 
-def getRestaurantDetails(restaurant_dict, numOfRestaurants):
+def get_restaurant_details(restaurant_dict, num_of_restaurants):
+    """Returns infomation on the business ids in a dict passed to"""
     i = 0
     name = []
     image = []
     yelp_url = []
     rating = []
-    length = len(restaurant_dict)
-    if length > numOfRestaurants:
-        length = numOfRestaurants
+    length = min(len(restaurant_dict), num_of_restaurants)
     for key in restaurant_dict.keys():
-        if i == numOfRestaurants:
+        if i == num_of_restaurants:
             break
         response = requests.get(url=URL_ID + key, headers=HEADERS)
         data = response.json()
