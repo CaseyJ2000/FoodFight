@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 """Loads the app"""
 import re
 import os
