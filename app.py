@@ -8,7 +8,7 @@ from flask_login import (login_user, current_user, LoginManager, UserMixin,
                          login_required)
 import flask
 from werkzeug.security import (generate_password_hash, check_password_hash)
-from yelp import (getRestaurant, getRestaurantDetails)
+from yelp import (get_restaurant, get_restaurant_details)
 
 load_dotenv(find_dotenv())
 
@@ -43,6 +43,13 @@ class LikedBiz(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     business_id = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(80), nullable=False)
+
+    def __repr__(self):
+        return f"<User {self.username}> <business_id {self.business_id}>"
+
+    def get_username(self):
+        """Returns username"""
+        return self.username
 
 
 db.create_all()
@@ -95,8 +102,8 @@ def login():
 
         login_user(user)
         return flask.redirect(flask.url_for("menu"))
-    else:
-        return flask.render_template("login.html")
+
+    return flask.render_template("login.html")
 
 
 @app.route("/menu")
@@ -130,8 +137,8 @@ def get_party_rec():
                    key=operator.itemgetter(1),
                    reverse=True))
 
-        restaurant_details = getRestaurantDetails(sorted_dict,
-                                                  NUM_OF_PARTY_RECS)
+        restaurant_details = get_restaurant_details(sorted_dict,
+                                                    NUM_OF_PARTY_RECS)
         return flask.render_template(
             "party.html",
             recieved_party_data=True,
@@ -141,8 +148,8 @@ def get_party_rec():
             rating=restaurant_details["rating"],
             length=restaurant_details["length"],
         )
-    else:
-        return flask.render_template("party.html")
+
+    return flask.render_template("party.html")
 
 
 @app.route("/profile")
@@ -161,7 +168,7 @@ def search_results():
         newlocation = flask.request.form.get("location")
 
         try:
-            restaurant_info = getRestaurant(newterm, newlocation)
+            restaurant_info = get_restaurant(newterm, newlocation)
         except KeyError:
             error_msg = ""
 
@@ -224,8 +231,8 @@ def signup():
         db.session.commit()
 
         return flask.redirect(flask.url_for("login"))
-    else:
-        return flask.render_template("signup.html")
+
+    return flask.render_template("signup.html")
 
 
 @app.route("/")
