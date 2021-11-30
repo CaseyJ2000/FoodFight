@@ -738,6 +738,7 @@ legend {
 }
 
 .wrapper li a:hover {
-  background-color: #666;
+  color: #161919;
+  background: rgba(#dd3675,#b44593);
 }
 

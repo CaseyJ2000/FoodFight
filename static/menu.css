@@ -131,5 +131,5 @@ body, .nav, .menu {
     
     .wrapper li a:hover {
       color: #161919;
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(#dd3675,#b44593);
     }
