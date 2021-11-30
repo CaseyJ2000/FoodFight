@@ -93,6 +93,7 @@ def login():
     """Endpoint for login"""
     if flask.request.method == "POST":
         username = flask.request.form.get("username")
+        username = username.lower()
         password = flask.request.form.get("password")
 
         user = User.query.filter_by(username=username).first()
@@ -206,6 +207,7 @@ def signup():
     """Endpoint for signup"""
     if flask.request.method == "POST":
         username = flask.request.form.get("username")
+        username = username.lower()
         password = flask.request.form.get("password")
         repeated_password = flask.request.form.get("repeatedPassword")
 
