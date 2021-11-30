@@ -160,8 +160,9 @@ def get_party_rec():
 @app.route("/profile")
 @login_required
 def profile():
+    username = current_user.username
     """Loads profile webpage"""
-    return flask.render_template("profile.html")
+    return flask.render_template("profile.html", username=username)
 
 
 @app.route("/search", methods=["GET", "POST"])
