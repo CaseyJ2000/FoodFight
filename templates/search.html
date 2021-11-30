@@ -10,6 +10,15 @@
 </head>
 
 <body>
+    <div class="wrapper">
+        <ul>
+            <li><a href="/about">About</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/party">Create a Party</a></li>
+            <li><a href="/profile">Profile</a></li>
+        </ul>
+    </div>
+
     <div class="s01">
         <form action="/search" method="POST">
             <div class="inner-form">
@@ -33,8 +42,14 @@
         <div class="box">
             <h2 class="title">{{ name [i] }} </h2>
             <img class="food_image" src="{{ image [i]}}" width=300 height=300 />
+
             <form action="/like" method="POST" class="search-box">
                 <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
+
+                <div class="link-box">
+                    <a href="{{yelp_url[i]}}"> Find on Yelp </a>
+                </div>
+
             </form>
         </div class="box">
     </div>
