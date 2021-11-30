@@ -241,6 +241,7 @@ def signup():
 @app.route('/delete', methods=['POST', 'GET'])
 @login_required
 def delete_account():
+    """Endpoint to delete account"""
     if flask.request.method == "POST":
         user_to_be_deleted = current_user.get_username()
         entered_username = flask.request.form.get("username")
@@ -252,8 +253,7 @@ def delete_account():
 
             flask.flash("Your account has been successfully deleted.")
             return flask.redirect(flask.url_for('login'))
-        else:
-            flask.flash("Email is incorrect")
+        flask.flash("Email is incorrect")
     return flask.render_template("delete-account.html")
 
 
