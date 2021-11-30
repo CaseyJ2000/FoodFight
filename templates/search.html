@@ -35,6 +35,7 @@
             <img class="food_image" src="{{ image [i]}}" width=300 height=300 />
             <form action="/like" method="POST" class="search-box">
                 <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
+                <a href="{{yelp_url[i]}}"> Find on Yelp </a>
             </form>
         </div class="box">
     </div>
