@@ -238,6 +238,25 @@ def signup():
     return flask.render_template("signup.html")
 
 
+@app.route('/delete', methods=['POST', 'GET'])
+@login_required
+def delete_account():
+    if flask.request.method == "POST":
+        user_to_be_deleted = current_user.get_username()
+        entered_username = flask.request.form.get("username")
+        entered_username = entered_username.lower()
+        if user_to_be_deleted == entered_username:
+            LikedBiz.query.filter_by(username=user_to_be_deleted).delete()
+            User.query.filter_by(username=user_to_be_deleted).delete()
+            db.session.commit()
+
+            flask.flash("Your account has been successfully deleted.")
+            return flask.redirect(flask.url_for('login'))
+        else:
+            flask.flash("Email is incorrect")
+    return flask.render_template("delete-account.html")
+
+
 @app.route("/")
 def main():
     """Origin for user Login"""
