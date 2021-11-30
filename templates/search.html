@@ -32,6 +32,13 @@
     <div class="outerbox">
         <div class="box">
             <h2 class="title">{{ name [i] }} </h2>
+            <div class="right-side">
+                <h4> {{ rating [i]}} </h4>
+                <h4> {{ category [i]}} </h4>
+                <h4> {{ location [i]}} </h4>
+                <h4> {{ transactions [i]}} </h4>
+                <h4> {{ review_count [i]}} reviews </h4>
+            </div>
             <img class="food_image" src="{{ image [i]}}" width=300 height=300 />
             <form action="/like" method="POST" class="search-box">
                 <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
