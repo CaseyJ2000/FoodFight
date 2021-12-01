@@ -53,14 +53,22 @@
     {% if recieved_party_data %}
     {%for i in range (0, length)%}
     <br>
-    <div class="box">
-        <h2 class="title">{{ name [i] }} </h2>
-        <img class="food_image" src="{{ image [i] }}" width=300 height=300 />
-        <p class="rating"> &#9733; {{ rating[i] }}</p>
-        <a href="{{ yelp_url[i] }}">Link to Yelp Page</a>
+    <div class="outerbox">
+            <div class="box">
+                <h2 class="title">{{ name [i] }} </h2>
+                <img class="food_image" src="{{ image [i]}}" width=300 height=300 />
 
+                <form action="/like" method="POST" class="search-box">
+                    <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
+                    
+                <form action="/unlike" method="POST" class="search-box">
+                    <button name="Unlike" value="{{ biz_id[i] }}" type="submit">Unlike</button>
+                    
+                <div class="link-box">
+                    <a href="{{yelp_url[i]}}"> Find on Yelp </a>
+                </div>
 
-    </div>
+            </form>
     <br>
     <br>
     {% endfor %}
