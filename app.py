@@ -72,11 +72,13 @@ def menu():
     """Loads menu webpage"""
     return flask.render_template("menu.html")
 
+
 @app.route("/about")
 @login_required
 def about():
     """Loads about page"""
     return flask.render_template("about.html")
+
 
 @app.route("/search", methods=["GET", "POST"])
 @login_required
