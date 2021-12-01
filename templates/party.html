@@ -3,7 +3,8 @@
 <head>
     <title>Create a Party</title>
     <link rel="shortcut icon" href="http://cdn.onlinewebfonts.com/svg/img_481531.png" />
-    <link rel="stylesheet" href={{ url_for( 'static' , filename='search.css' ) }} />
+    <link href="/static/party.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -20,15 +21,29 @@
 
     <h1>Enter your party member's emails seperated by spaces</h1>
 
-    <form action="/party" method="POST">
-        <input type="text" name="people_in_party" placeholder="People in party" />
-        <input type="submit" value="submit"></input>
+
+    <div class="s01">
+        <form action="/party" method="POST">
+            <div class="inner-form">
+                <div class="input-field first-wrap">
+                    <input id="search" name="people_in_party" type="text" placeholder="People in party" />
+                </div>
+
+                <div class="input-field third-wrap">
+                    <button class="btn-search" value="Search" type="submit">Submit</button>
+                </div>
+            </div>
+
+
+
+    </div>
+
     </form>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul class="flashes">
         {% for messages in messages %}
-        <p style="color:red;">{{ messages}}</p>
+        <p style="color:black;">{{ messages}}</p>
         {%endfor%}
     </ul>
     {% endif %}
@@ -37,11 +52,13 @@
     {% if recieved_party_data %}
     {%for i in range (0, length)%}
     <br>
-    <div>
+    <div class="box">
         <h2 class="title">{{ name [i] }} </h2>
         <img class="food_image" src="{{ image [i] }}" width=300 height=300 />
-        <p> Rating: {{ rating[i] }}</p>
+        <p class="rating"> &#9733; {{ rating[i] }}</p>
         <a href="{{ yelp_url[i] }}">Link to Yelp Page</a>
+
+
     </div>
     <br>
     <br>
