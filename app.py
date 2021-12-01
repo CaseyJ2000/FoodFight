@@ -5,11 +5,16 @@ import os
 import operator
 from dotenv import load_dotenv, find_dotenv
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import (login_user, current_user, LoginManager, UserMixin,
-                         login_required)
+from flask_login import (
+    login_user,
+    current_user,
+    LoginManager,
+    UserMixin,
+    login_required,
+)
 import flask
-from werkzeug.security import (generate_password_hash, check_password_hash)
-from yelp import (get_restaurant, get_restaurant_details)
+from werkzeug.security import generate_password_hash, check_password_hash
+from yelp import get_restaurant, get_restaurant_details
 
 load_dotenv(find_dotenv())
 
@@ -41,6 +46,7 @@ class User(UserMixin, db.Model):
 
 class LikedBiz(db.Model):
     """Creates model for LikeBiz"""
+
     id = db.Column(db.Integer, primary_key=True)
     business_id = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(80), nullable=False)
@@ -81,7 +87,8 @@ def like():
         return flask.redirect(flask.request.referrer)
     username = current_user.username
     liked_restaurants = LikedBiz.query.filter_by(
-        username=username, business_id=business_id).first()
+        username=username, business_id=business_id
+    ).first()
     if not liked_restaurants:
         db.session.add(LikedBiz(business_id=business_id, username=username))
         db.session.commit()
@@ -124,8 +131,7 @@ def get_party_rec():
         party_members = people_in_party.split(" ")
         restaurant_dict = {}
         for user in party_members:
-            current_party_member = LikedBiz.query.filter_by(
-                username=user).all()
+            current_party_member = LikedBiz.query.filter_by(username=user).all()
             if current_party_member == []:
                 flask.flash(f"{user} could not be found")
             for row in current_party_member:
@@ -135,12 +141,10 @@ def get_party_rec():
                     new_amount = restaurant_dict.get(row.business_id) + 1
                     restaurant_dict.update({row.business_id: new_amount})
         sorted_dict = dict(
-            sorted(restaurant_dict.items(),
-                   key=operator.itemgetter(1),
-                   reverse=True))
+            sorted(restaurant_dict.items(), key=operator.itemgetter(1), reverse=True)
+        )
 
-        restaurant_details = get_restaurant_details(sorted_dict,
-                                                    NUM_OF_PARTY_RECS)
+        restaurant_details = get_restaurant_details(sorted_dict, NUM_OF_PARTY_RECS)
         return flask.render_template(
             "party.html",
             recieved_party_data=True,
@@ -189,6 +193,7 @@ def search_results():
         image = restaurant_info[1]
         location = restaurant_info[2]
         biz_id = restaurant_info[3]
+        yelp_url = restaurant_info[4]
 
         return flask.render_template(
             "search.html",
@@ -197,6 +202,7 @@ def search_results():
             image=image,
             name=name,
             biz_id=biz_id,
+            yelp_url=yelp_url,
         )
 
     return flask.render_template("search.html")
@@ -221,8 +227,7 @@ def signup():
             return flask.redirect(flask.url_for("signup"))
         user = User.query.filter_by(username=username).first()
         if user:
-            flask.flash(
-                "Email already in use, please retry with a different email!")
+            flask.flash("Email already in use, please retry with a different email!")
             return flask.redirect(flask.url_for("signup"))
 
         new_user = User(
@@ -238,7 +243,7 @@ def signup():
     return flask.render_template("signup.html")
 
 
-@app.route('/delete', methods=['POST', 'GET'])
+@app.route("/delete", methods=["POST", "GET"])
 @login_required
 def delete_account():
     """Endpoint to delete account"""
@@ -252,7 +257,7 @@ def delete_account():
             db.session.commit()
 
             flask.flash("Your account has been successfully deleted.")
-            return flask.redirect(flask.url_for('login'))
+            return flask.redirect(flask.url_for("login"))
         flask.flash("Email is incorrect")
     return flask.render_template("delete-account.html")
 
@@ -266,6 +271,6 @@ def main():
 
 
 if __name__ == "__main__":
-    app.run(host=os.getenv("IP", "0.0.0.0"),
-            port=int(os.getenv("PORT", "8081")),
-            debug=True)
+    app.run(
+        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8081")), debug=True
+    )

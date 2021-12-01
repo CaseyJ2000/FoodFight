@@ -3,9 +3,21 @@
 <head>
     <title>Create a Party</title>
     <link rel="shortcut icon" href="http://cdn.onlinewebfonts.com/svg/img_481531.png" />
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='search.css' ) }} />
 </head>
 
 <body>
+    <div class="wrapper">
+        <ul>
+            <li><a href="/menu">Menu</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/party">Create a Party</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/signup">Logout</a></li>
+        </ul>
+    </div>
+
     <h1>Enter your party member's emails seperated by spaces</h1>
 
     <form action="/party" method="POST">
