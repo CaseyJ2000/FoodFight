@@ -197,6 +197,8 @@ def search_results():
         review_count = restaurant_info[6]
         rating = restaurant_info[7]
         transactions = restaurant_info[8]
+        address = restaurant_info[9]
+
         return flask.render_template(
             "search.html",
             search_query=True,
@@ -209,6 +211,7 @@ def search_results():
             review_count=review_count,
             rating=rating,
             transactions=transactions,
+            address=address,
         )
 
     return flask.render_template("search.html")
