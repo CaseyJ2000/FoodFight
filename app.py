@@ -92,7 +92,8 @@ def like():
     if not liked_restaurants:
         db.session.add(LikedBiz(business_id=business_id, username=username))
         db.session.commit()
-    return flask.redirect(flask.request.referrer)
+    return flask.redirect(flask.url_for("profile"))
+    # return flask.redirect(flask.request.referrer)
 
 
 @app.route("/login", methods=["POST", "GET"])
