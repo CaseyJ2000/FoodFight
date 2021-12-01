@@ -196,6 +196,11 @@ def search_results():
         location = restaurant_info[2]
         biz_id = restaurant_info[3]
         yelp_url = restaurant_info[4]
+        category = restaurant_info[5]
+        review_count = restaurant_info[6]
+        rating = restaurant_info[7]
+        transactions = restaurant_info[8]
+        location_state = restaurant_info[9]
 
         return flask.render_template(
             "search.html",
@@ -205,6 +210,11 @@ def search_results():
             name=name,
             biz_id=biz_id,
             yelp_url=yelp_url,
+            category=category,
+            review_count=review_count,
+            rating=rating,
+            transactions=transactions,
+            location_state=location_state,
         )
 
     return flask.render_template("search.html")
