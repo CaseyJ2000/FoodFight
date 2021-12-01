@@ -193,6 +193,7 @@ def search_results():
         image = restaurant_info[1]
         location = restaurant_info[2]
         biz_id = restaurant_info[3]
+        yelp_url = restaurant_info[4]
 
         return flask.render_template(
             "search.html",
@@ -201,6 +202,7 @@ def search_results():
             image=image,
             name=name,
             biz_id=biz_id,
+            yelp_url=yelp_url,
         )
 
     return flask.render_template("search.html")

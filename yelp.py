@@ -23,13 +23,16 @@ def get_restaurant(term, location):
     name = []
     location = []
     image = []
+    yelp_url = []
+    category = []
     for i in data["businesses"]:
         restaurant_ids.append(i["id"])
         name.append(i["name"])
         location.append(i["location"]["city"])
         image.append(i["image_url"])
+        yelp_url.append(i["url"])
 
-    return (name, image, location, restaurant_ids)
+    return (name, image, location, restaurant_ids, yelp_url)
 
 
 def get_restaurant_details(restaurant_dict, num_of_restaurants):
