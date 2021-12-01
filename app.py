@@ -243,7 +243,7 @@ def signup():
     return flask.render_template("signup.html")
 
 
-@app.route('/delete', methods=['POST', 'GET'])
+@app.route("/delete", methods=["POST", "GET"])
 @login_required
 def delete_account():
     """Endpoint to delete account"""
@@ -257,7 +257,7 @@ def delete_account():
             db.session.commit()
 
             flask.flash("Your account has been successfully deleted.")
-            return flask.redirect(flask.url_for('login'))
+            return flask.redirect(flask.url_for("login"))
         flask.flash("Email is incorrect")
     return flask.render_template("delete-account.html")
 
