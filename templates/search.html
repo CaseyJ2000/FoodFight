@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -6,7 +7,7 @@
 </head>
 
 <body>
-
+    <script src="search.js"></script>
     <form action="/search" method="POST" class="search-box">
         <div class="search">
             <div class="left-side">
@@ -32,9 +33,20 @@
     <div class="box">
         <img src="{{ image [i]}}" width=300 height=300 />
     </div class="box">
-    <form action="/like" method="POST" class="search-box">
-        <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
-    </form>
+        <form action="/like" method="POST" class="search-box" onsubmit="return false">
+            <button onclick="toggle()" name="Like" value="{{ biz_id[i] }}" id="myButton" type="submit">Like</button>  
+            <script>
+                function toggle() {
+                    var elem = document.getElementById("myButton"),
+                        text = elem.textContent || elem.innerText;
+                    if (text === "Like") 
+                        elem.innerHTML = "Unlike";
+                    else 
+                        elem.innerHTML = "Like";
+            }
+            </script>
+        </form> 
+        
     {% endfor %}
     {% endif %}
 </body>
