@@ -76,7 +76,7 @@ def load_user(user_name):
 @login_required
 def about():
     """Loads about page"""
-    return flask.render_template("about.html") 
+    return flask.render_template("about.html")
 
 
 @app.route("/like", methods=["POST"])
@@ -92,8 +92,8 @@ def like():
     if not liked_restaurants:
         db.session.add(LikedBiz(business_id=business_id, username=username))
         db.session.commit()
-    return flask.redirect(flask.url_for("profile"))
-    # return flask.redirect(flask.request.referrer)
+    # return flask.redirect(flask.url_for("search_results"))
+    return flask.redirect(flask.request.referrer)
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -279,6 +279,7 @@ def main():
     if current_user.is_authenticated:
         return flask.redirect(flask.url_for("menu"))
     return flask.redirect(flask.url_for("login"))
+
 
 if __name__ == "__main__":
     app.run(
