@@ -95,6 +95,22 @@ def like():
     return flask.redirect(flask.request.referrer)
 
 
+@app.route("/unlike", methods=["POST"])
+def unlike():
+
+    business_id = flask.request.form.get("Unlike")
+    if business_id == "":
+        return flask.redirect(flask.request.referrer)
+    username = current_user.username
+    liked_restaurants = LikedBiz.query.filter_by(
+        username=username, business_id=business_id
+    ).first()
+    if liked_restaurants:
+        db.session.delete(LikedBiz(business_id=business_id, username=username))
+        db.session.commit()
+    return flask.redirect(flask.request.referrer)
+
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     """Endpoint for login"""
