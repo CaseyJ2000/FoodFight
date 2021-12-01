@@ -824,3 +824,36 @@ a{
   text-decoration: none;
   color: white;
 }
+
+.badge {
+  border-radius: 0;
+  font-size: 12px;
+  line-height: 1;
+  padding: .375rem .5625rem;
+  font-weight: normal
+}
+
+.badge.badge-pill {
+  border-radius: 10rem
+}
+
+.chip{
+	padding: 8px 10px;
+	border-radius: 10px;
+	font-weight: 600;
+	font-size: 10px;
+	box-shadow: 0 2px 5px rgba(0,0,0,.25);
+	/* margin: 0 6px; */
+	
+	cursor: pointer;
+}
+
+.chip.alias{
+	background: #bbbbbb;
+	color: whitesmoke;
+}
+
+.chip.transactions{
+	background: #dd3675;
+	color: whitesmoke;
+}
