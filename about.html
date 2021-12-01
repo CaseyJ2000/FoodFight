@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>About Us</title>
+<link href="/static/about.css" rel="stylesheet">
+<script src="jquery-3.5.1.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+      <div class="gradient-custom-2">
+        <div class="container py-5">
+          <div class="row h-100 align-items-center py-5">
+            <div class="col-lg-6">
+              <h1 class="display-4" style="color: white;">About us...</h1>
+              <h5 style="color: white;">We strive to allow our users to pick the best restaurant amongst their friends!</h5>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+              <img src="https://reliasoftware.com/static/0b8c0e40862f29bdc8dfece04ddaeb19/46604/delivery-app-contact.png" alt="phone-food" class="img-fluid"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <div class="container py-5">
+          <div class="row align-items-center mb-5">
+            <div class="col-lg-6 order-2 order-lg-1"><i class="fa fa-bar-chart fa-2x mb-3 text-primary"></i>
+              <h2 class="font-weight-light">Make your breakfast, brunch, lunch and dinner plans now!</h2>
+              <p class="font-italic text-muted mb-4">We provide a way for our users to easily decide where to eat based on restaurants' Yelp likes. Sign in and decide where to eat now!</p>
+              <a href={{ url_for('login') }} class="btn btn-light px-5 rounded-pill shadow-sm">Sign In</a>
+            </div>
+            <div class="col-lg-5 px-5 mx-auto order-1 order-lg-2">
+              <img src="https://www.pngkey.com/png/full/316-3160671_mixing-bowl-is-not-a-fast-food-experience.png" alt="" class="img-fluid mb-4 mb-lg-0"></div>
+          </div>
+          <div class="row align-items-center">
+            <div class="col-lg-5 px-5 mx-auto">
+              <img src="https://www.freepnglogos.com/uploads/food-png/food-grass-fed-beef-foodservice-products-grass-run-farms-4.png" alt="" class="img-fluid mb-4 mb-lg-0"></div>
+            <div class="col-lg-6"><i class="fa fa-leaf fa-2x mb-3 text-primary"></i>
+              <h2 class="font-weight-light">Add your friends to a group and choose your favorite restaurant now!</h2>
+              <p class="font-italic text-muted mb-4">We allow our users to add their friends to a group enabling them to search and like restaurants on Yelp</p>
+              <a href={{ url_for('get_party_rec') }} class="btn btn-light px-5 rounded-pill shadow-sm">Create a Group</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="gradient-custom-2">
+        <div class="container py-5">
+          <div class="row mb-4">
+            <div class="col-lg-5">
+              <h2 class="display-4 font-weight-light" style="color: white;">Our team</h2>
+              <p style="color: white;">Georgia State University students based in Atlanta Georgia</p>
+            </div>
+          </div>
+      
+          <div class="row text-center">
+            <!-- Team item-->
+            <div class="col-xl-3 col-sm-6 mb-5">
+              <div class="bg-white rounded shadow-sm py-5 px-4">
+                <img src="https://cdn.shopify.com/s/files/1/1061/1924/products/Cow_emoji_icon_png_grande.png?v=1571606068" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Casey Jobe</h5><span class="small text-uppercase text-muted">CEO - Founder</span>
+              </div>
+            </div>
+            <!-- End-->
+      
+            <!-- Team item-->
+            <div class="col-xl-3 col-sm-6 mb-5">
+              <div class="bg-white rounded shadow-sm py-5 px-4">
+                <img src="https://www.emoji.co.uk/files/apple-emojis/animals-nature-ios/216-koala.png" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Stephanie Olele</h5><span class="small text-uppercase text-muted">CEO - Founder</span>
+              </div>
+            </div>
+            <!-- End-->
+      
+            <!-- Team item-->
+            <div class="col-xl-3 col-sm-6 mb-5">
+              <div class="bg-white rounded shadow-sm py-5 px-4"> 
+                  <img src="https://www.pinclipart.com/picdir/big/524-5245860_dog-cute-iphone-stickers-emojisticker-emoticon-emoji-dog.png" alt="" height="100" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Sydney Yim</h5><span class="small text-uppercase text-muted">CEO - Founder</span>
+              </div>
+            </div>
+            <!-- End-->
+      
+            <!-- Team item-->
+            <div class="col-xl-3 col-sm-6 mb-5">
+              <div class="bg-white rounded shadow-sm py-5 px-4">
+                <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.shopify.com%2Fs%2Ffiles%2F1%2F1061%2F1924%2Fproducts%2FPig_Emoji_grande.png%3Fv%3D1480481036&f=1&nofb=1" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Victor Lam</h5><span class="small text-uppercase text-muted">CEO - Founder</span>
+              </div>
+            </div>
+            <!-- End-->
+
+            <!-- Team item-->
+            <div class="col-xl-3 col-sm-6 mb-5">
+              <div class="bg-white rounded shadow-sm py-5 px-4">
+                <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.emoji.co.uk%2Ffiles%2Fapple-emojis%2Fanimals-nature-ios%2F212-hamster-face.png&f=1&nofb=1" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                <h5 class="mb-0">Owen Bochner</h5><span class="small text-uppercase text-muted">CEO - Founder</span>
+              </div>
+            </div>
+            <!-- End-->
+      
+          </div>
+        </div>
+      </div>
+</body>
+</html>
