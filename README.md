@@ -1,6 +1,6 @@
 <h1 align="center">FoodFight</h1>
 
-###  [Link to Heroku](https://food-fight-gsu.herokuapp.com/)
+###  [Link to Heroku](https://food-fight-gsu-sprint2.herokuapp.com/)
 
 # Table of contents
 
