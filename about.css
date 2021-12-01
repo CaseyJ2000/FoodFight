@@ -43,3 +43,33 @@
     border-bottom-right-radius: 0.3rem;
   }
 }
+
+.wrapper {
+  background: #e6e6fa;
+  background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+  font-family: "Open Sans", Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.wrapper ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.wrapper li {
+  float: left;
+}
+
+.wrapper li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.wrapper li a:hover {
+  color: #161919;
+  background: rgba(#dd3675, #b44593);
+}
