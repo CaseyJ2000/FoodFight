@@ -1,5 +1,6 @@
 h1{
-    text-align: center;    
+    text-align: center;
+    color:white;    
     
 }
 
@@ -202,7 +203,7 @@ form {
 .rating {
     color:orange;
   }
-  
+
   .flashes {
       text-align: center;
   }
