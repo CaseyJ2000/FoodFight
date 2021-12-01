@@ -51,12 +51,13 @@
     {% endwith %}
     <!-- Get length of results and print -->
     {% if recieved_party_data %}
+    {% if search_query %}
     {%for i in range (0, length)%}
     <br>
     <div class="outerbox">
             <div class="box">
                 <h2 class="title">{{ name [i] }} </h2>
-                <img class="food_image" src="{{ image [i]}}" width=300 height=300 />
+                <img class="food_image" src="{{ image [i] }}" width=300 height=300 />
 
                 <form action="/like" method="POST" class="search-box">
                     <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
@@ -74,6 +75,7 @@
     <br>
     <br>
     {% endfor %}
+    {% endif %}
     {% endif %}
 </body>
 

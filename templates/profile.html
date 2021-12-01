@@ -25,10 +25,18 @@
             <h2> UNDER CONSTRUCTION </h2>
             <a href="/delete">Delete your account</a>
             <a href="/menu"> Back to Menu</a>
-
         </div>
     </div> -->
+    <h2> Hello {{ username }} </h2>
+    {% if search_query %}
+    {%for i in liked_restaurants%}
+    <h2 class="title">{{ name [i] }} </h2>
+    <img class="food_image" src="{{ image [i] }}" width=300 height=300 />
 
+    <form action="/unlike" method="POST" class="search-box">
+        <button name="Unlike" value="{{ biz_id[i] }}" type="submit">Unlike</button>
+    {% endfor %}
+    {% endif %}
 </body>
 
 </html>
