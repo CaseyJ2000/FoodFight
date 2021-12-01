@@ -100,6 +100,7 @@ def login():
     """Endpoint for login"""
     if flask.request.method == "POST":
         username = flask.request.form.get("username")
+        username = username.lower()
         password = flask.request.form.get("password")
 
         user = User.query.filter_by(username=username).first()
@@ -213,6 +214,7 @@ def signup():
     """Endpoint for signup"""
     if flask.request.method == "POST":
         username = flask.request.form.get("username")
+        username = username.lower()
         password = flask.request.form.get("password")
         repeated_password = flask.request.form.get("repeatedPassword")
 
@@ -240,6 +242,25 @@ def signup():
         return flask.redirect(flask.url_for("login"))
 
     return flask.render_template("signup.html")
+
+
+@app.route("/delete", methods=["POST", "GET"])
+@login_required
+def delete_account():
+    """Endpoint to delete account"""
+    if flask.request.method == "POST":
+        user_to_be_deleted = current_user.get_username()
+        entered_username = flask.request.form.get("username")
+        entered_username = entered_username.lower()
+        if user_to_be_deleted == entered_username:
+            LikedBiz.query.filter_by(username=user_to_be_deleted).delete()
+            User.query.filter_by(username=user_to_be_deleted).delete()
+            db.session.commit()
+
+            flask.flash("Your account has been successfully deleted.")
+            return flask.redirect(flask.url_for("login"))
+        flask.flash("Email is incorrect")
+    return flask.render_template("delete-account.html")
 
 
 @app.route("/")
