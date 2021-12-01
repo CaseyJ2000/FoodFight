@@ -92,7 +92,8 @@ def like():
     if not liked_restaurants:
         db.session.add(LikedBiz(business_id=business_id, username=username))
         db.session.commit()
-    return flask.redirect(flask.request.referrer)
+    return flask.redirect(flask.url_for("profile"))
+    # return flask.redirect(flask.request.referrer)
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -100,6 +101,7 @@ def login():
     """Endpoint for login"""
     if flask.request.method == "POST":
         username = flask.request.form.get("username")
+        username = username.lower()
         password = flask.request.form.get("password")
 
         user = User.query.filter_by(username=username).first()
@@ -197,7 +199,7 @@ def search_results():
         review_count = restaurant_info[6]
         rating = restaurant_info[7]
         transactions = restaurant_info[8]
-        address = restaurant_info[9]
+        location_state = restaurant_info[9]
 
         return flask.render_template(
             "search.html",
@@ -211,7 +213,7 @@ def search_results():
             review_count=review_count,
             rating=rating,
             transactions=transactions,
-            address=address,
+            location_state=location_state,
         )
 
     return flask.render_template("search.html")
@@ -222,6 +224,7 @@ def signup():
     """Endpoint for signup"""
     if flask.request.method == "POST":
         username = flask.request.form.get("username")
+        username = username.lower()
         password = flask.request.form.get("password")
         repeated_password = flask.request.form.get("repeatedPassword")
 
@@ -249,6 +252,25 @@ def signup():
         return flask.redirect(flask.url_for("login"))
 
     return flask.render_template("signup.html")
+
+
+@app.route("/delete", methods=["POST", "GET"])
+@login_required
+def delete_account():
+    """Endpoint to delete account"""
+    if flask.request.method == "POST":
+        user_to_be_deleted = current_user.get_username()
+        entered_username = flask.request.form.get("username")
+        entered_username = entered_username.lower()
+        if user_to_be_deleted == entered_username:
+            LikedBiz.query.filter_by(username=user_to_be_deleted).delete()
+            User.query.filter_by(username=user_to_be_deleted).delete()
+            db.session.commit()
+
+            flask.flash("Your account has been successfully deleted.")
+            return flask.redirect(flask.url_for("login"))
+        flask.flash("Email is incorrect")
+    return flask.render_template("delete-account.html")
 
 
 @app.route("/")

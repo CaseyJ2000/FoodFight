@@ -755,6 +755,7 @@ legend {
   float: left;
   margin: 4px 2px;
   border-radius: 8px;
+  margin-right:140px;
 }
 
 .like-button{
@@ -767,8 +768,8 @@ legend {
   text-align: center;
   text-decoration: none;
   font-size: 16px;
-  margin: 4px 2px;
-  margin-left:100px;
+  margin: 4px 2px; 
+  margin-left:20px;
   cursor: pointer;
 }
 
@@ -788,7 +789,7 @@ legend {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  margin-left:255px;
+  margin-left:155px;
 }
 
 .yelp-button span {
