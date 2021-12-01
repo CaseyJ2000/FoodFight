@@ -25,7 +25,7 @@ if uri.startswith("postgres://"):
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = os.getenv("SECRET_KEY")
-NUM_OF_PARTY_RECS = 5
+NUM_OF_PARTY_RECS = 25
 db = SQLAlchemy(app)
 
 
@@ -76,7 +76,7 @@ def load_user(user_name):
 @login_required
 def about():
     """Loads about page"""
-    return flask.render_template("about.html") 
+    return flask.render_template("about.html")
 
 
 @app.route("/like", methods=["POST"])
@@ -87,13 +87,12 @@ def like():
         return flask.redirect(flask.request.referrer)
     username = current_user.username
     liked_restaurants = LikedBiz.query.filter_by(
-        username=username, business_id=business_id
-    ).first()
+        username=username, business_id=business_id).first()
     if not liked_restaurants:
         db.session.add(LikedBiz(business_id=business_id, username=username))
         db.session.commit()
-    return flask.redirect(flask.url_for("profile"))
-    # return flask.redirect(flask.request.referrer)
+    # return flask.redirect(flask.url_for("search_results"))
+    return flask.redirect(flask.request.referrer)
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -132,7 +131,8 @@ def get_party_rec():
         party_members = people_in_party.split(" ")
         restaurant_dict = {}
         for user in party_members:
-            current_party_member = LikedBiz.query.filter_by(username=user).all()
+            current_party_member = LikedBiz.query.filter_by(
+                username=user).all()
             if current_party_member == []:
                 flask.flash(f"{user} could not be found")
             for row in current_party_member:
@@ -142,10 +142,12 @@ def get_party_rec():
                     new_amount = restaurant_dict.get(row.business_id) + 1
                     restaurant_dict.update({row.business_id: new_amount})
         sorted_dict = dict(
-            sorted(restaurant_dict.items(), key=operator.itemgetter(1), reverse=True)
-        )
+            sorted(restaurant_dict.items(),
+                   key=operator.itemgetter(1),
+                   reverse=True))
 
-        restaurant_details = get_restaurant_details(sorted_dict, NUM_OF_PARTY_RECS)
+        restaurant_details = get_restaurant_details(sorted_dict,
+                                                    NUM_OF_PARTY_RECS)
         return flask.render_template(
             "party.html",
             recieved_party_data=True,
@@ -238,7 +240,8 @@ def signup():
             return flask.redirect(flask.url_for("signup"))
         user = User.query.filter_by(username=username).first()
         if user:
-            flask.flash("Email already in use, please retry with a different email!")
+            flask.flash(
+                "Email already in use, please retry with a different email!")
             return flask.redirect(flask.url_for("signup"))
 
         new_user = User(
@@ -280,7 +283,8 @@ def main():
         return flask.redirect(flask.url_for("menu"))
     return flask.redirect(flask.url_for("login"))
 
+
 if __name__ == "__main__":
-    app.run(
-        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8081")), debug=True
-    )
+    app.run(host=os.getenv("IP", "0.0.0.0"),
+            port=int(os.getenv("PORT", "8081")),
+            debug=True)
