@@ -13,11 +13,8 @@ from flask_login import (
     login_required,
 )
 import flask
-from requests.api import request
 from werkzeug.security import generate_password_hash, check_password_hash
-import re
-from yelp import getRestaurant, getRestaurantDetails
-
+from yelp import get_restaurant, get_restaurant_details
 
 load_dotenv(find_dotenv())
 
@@ -47,7 +44,9 @@ class User(UserMixin, db.Model):
         return self.username
 
 
-class liked_biz(db.Model):
+class LikedBiz(db.Model):
+    """Creates model for LikeBiz"""
+
     id = db.Column(db.Integer, primary_key=True)
     business_id = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(80), nullable=False)
@@ -66,6 +65,49 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
+@app.route("/about")
+@login_required
+def about():
+    """Loads about page"""
+    return flask.render_template("about.html")
+
+
+@app.route("/like", methods=["POST"])
+def like():
+    """Adds users liked restaurant to the database"""
+    business_id = flask.request.form.get("Like")
+    if business_id == "":
+        return flask.redirect(flask.request.referrer)
+    username = current_user.username
+    liked_restaurants = LikedBiz.query.filter_by(
+        username=username, business_id=business_id
+    ).first()
+    if not liked_restaurants:
+        db.session.add(LikedBiz(business_id=business_id, username=username))
+        db.session.commit()
+    return flask.redirect(flask.request.referrer)
+
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    """Endpoint for login"""
+    if flask.request.method == "POST":
+        username = flask.request.form.get("username")
+        username = username.lower()
+        password = flask.request.form.get("password")
+
+        user = User.query.filter_by(username=username).first()
+
+        if not user or not check_password_hash(user.password, password):
+            flask.flash("Incorrect Username or Password. Try again!")
+            return flask.redirect(flask.url_for("login"))
+
+        login_user(user)
+        return flask.redirect(flask.url_for("menu"))
+
+    return flask.render_template("login.html")
+
+
 @app.route("/menu")
 @login_required
 def menu():
@@ -73,7 +115,43 @@ def menu():
     return flask.render_template("menu.html")
 
 
-@app.route("/about")
+@app.route("/party", methods=["POST", "GET"])
+@login_required
+def get_party_rec():
+    """End point for the party recommendations. Runs logic to recommend a list of restaurants"""
+    if flask.request.method == "POST":
+        people_in_party = flask.request.form.get("people_in_party")
+        party_members = people_in_party.split(" ")
+        restaurant_dict = {}
+        for user in party_members:
+            current_party_member = LikedBiz.query.filter_by(username=user).all()
+            if current_party_member == []:
+                flask.flash(f"{user} could not be found")
+            for row in current_party_member:
+                if restaurant_dict.get(row.business_id) is None:
+                    restaurant_dict.update({row.business_id: 1})
+                else:
+                    new_amount = restaurant_dict.get(row.business_id) + 1
+                    restaurant_dict.update({row.business_id: new_amount})
+        sorted_dict = dict(
+            sorted(restaurant_dict.items(), key=operator.itemgetter(1), reverse=True)
+        )
+
+        restaurant_details = get_restaurant_details(sorted_dict, NUM_OF_PARTY_RECS)
+        return flask.render_template(
+            "party.html",
+            recieved_party_data=True,
+            name=restaurant_details["name"],
+            image=restaurant_details["image"],
+            yelp_url=restaurant_details["yelp_url"],
+            rating=restaurant_details["rating"],
+            length=restaurant_details["length"],
+        )
+
+    return flask.render_template("party.html")
+
+
+@app.route("/profile")
 @login_required
 def about():
     """Loads about page"""
@@ -103,10 +181,11 @@ def search_results():
 
             return flask.render_template("error.html", errorMsg=errorMsg)
 
-        name = restaurantInfo[0]
-        image = restaurantInfo[1]
-        location = restaurantInfo[2]
-        biz_id = restaurantInfo[3]
+        name = restaurant_info[0]
+        image = restaurant_info[1]
+        location = restaurant_info[2]
+        biz_id = restaurant_info[3]
+        yelp_url = restaurant_info[4]
 
         return flask.render_template(
             "search.html",
@@ -115,6 +194,7 @@ def search_results():
             image=image,
             name=name,
             biz_id=biz_id,
+            yelp_url=yelp_url,
         )
 
     return flask.render_template("search.html")
@@ -170,23 +250,19 @@ def signup():
         return flask.render_template("signup.html")
 
 
-@app.route("/login", methods=["POST", "GET"])
-def login():
-    """Endpoint for login"""
+
+@app.route("/delete", methods=["POST", "GET"])
+@login_required
+def delete_account():
+    """Endpoint to delete account"""
     if flask.request.method == "POST":
         username = flask.request.form.get("username")
         password = flask.request.form.get("password")
 
-        user = User.query.filter_by(username=username).first()
-
-        if not user or not check_password_hash(user.password, password):
-            flask.flash("Incorrect Username or Password. Try again!")
+            flask.flash("Your account has been successfully deleted.")
             return flask.redirect(flask.url_for("login"))
-
-        login_user(user)
-        return flask.redirect(flask.url_for("menu"))
-    else:
-        return flask.render_template("login.html")
+        flask.flash("Email is incorrect")
+    return flask.render_template("delete-account.html")
 
 
 @app.route("/")
@@ -233,4 +309,6 @@ def get_party_rec():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8081")), debug=True
+    )
