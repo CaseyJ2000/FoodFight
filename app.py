@@ -76,7 +76,7 @@ def load_user(user_name):
 @login_required
 def about():
     """Loads about page"""
-    return flask.render_template("about.html")
+    return flask.render_template("about.html") 
 
 
 @app.route("/like", methods=["POST"])
@@ -279,7 +279,6 @@ def main():
     if current_user.is_authenticated:
         return flask.redirect(flask.url_for("menu"))
     return flask.redirect(flask.url_for("login"))
-
 
 if __name__ == "__main__":
     app.run(
