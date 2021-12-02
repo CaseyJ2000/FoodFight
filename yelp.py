@@ -25,14 +25,35 @@ def get_restaurant(term, location):
     image = []
     yelp_url = []
     category = []
+    review_count = []
+    rating = []
+    transactions = []
+    location_state = []
+
     for i in data["businesses"]:
         restaurant_ids.append(i["id"])
         name.append(i["name"])
         location.append(i["location"]["city"])
         image.append(i["image_url"])
         yelp_url.append(i["url"])
+        category.append(i["categories"][0]["title"])
+        review_count.append(i["review_count"])
+        rating.append(i["rating"])
+        transactions.append(i["transactions"])
+        location_state.append(i["location"]["state"])
 
-    return (name, image, location, restaurant_ids, yelp_url)
+    return (
+        name,
+        image,
+        location,
+        restaurant_ids,
+        yelp_url,
+        category,
+        review_count,
+        rating,
+        transactions,
+        location_state,
+    )
 
 
 def get_restaurant_details(restaurant_dict, num_of_restaurants):

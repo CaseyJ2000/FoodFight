@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="/static/search.css" rel="stylesheet" />
     <link rel="shortcut icon" href="http://cdn.onlinewebfonts.com/svg/img_481531.png" />
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
 </head>
 
 <body>
@@ -44,15 +46,22 @@
         <div class="box">
             <h2 class="title">{{ name [i] }} </h2>
             <img class="food_image" src="{{ image [i]}}" width=300 height=300 />
-
-            <form action="/like" method="POST" class="search-box">
-                <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
-
-                <div class="link-box">
-                    <a href="{{yelp_url[i]}}"> Find on Yelp </a>
-                </div>
-
+            <div class="right-side">
+                <h3 class="fa fa-star checked"> {{ rating [i]}} Rating </h3>
+                <!-- <h4 class="chip alias"> {{ category [i]}} </h4> -->
+                <h4 class="chip alias"> {{ category [i]}} </h4>
+                <!-- <h4 class="chip transactions"> {{ transactions [i]}} </h4> -->
+                <h4> {{ location [i]}}, {{ location_state [i]}} </h4>
+                <h4> {{ review_count [i]}} Reviews </h4>
+            </div>
+            <div class="like-box">
+                <form action="/like" method="POST" class="search-box">
+                    <button class="like-button" name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
+            </div>
             </form>
+            <div class="yelp-button">
+                <span><a href="{{yelp_url[i]}}">Find on Yelp </a></span>
+            </div>
         </div class="box">
     </div>
     <br>
