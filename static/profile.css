@@ -120,20 +120,20 @@ body {
 }
 
 .buttons button:nth-child(1) {
-  border: 1px solid #b44593 !important;
+  border: 1px solid #b44593;
   color: #b44593;
   height: 40px
 }
 
 .buttons button:nth-child(1):hover {
-  border: 1px solid #b44593 !important;
+  border: 1px solid #b44593;
   color: #fff;
   height: 40px;
   background-color: #b44593
 }
 
 .buttons button:nth-child(2) {
-  border: 1px solid #b44593 !important;
+  border: 1px solid #b44593;
   background-color: #b44593;
   color: #fff;
   height: 40px

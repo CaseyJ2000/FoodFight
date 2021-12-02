@@ -54,7 +54,8 @@
             </div>
             <div class="like-box">
                 <form action="/like" method="POST" class="search-box">
-                    <button class="like-button" name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
+                    <button id="like" class="like-button" name="Like" value="{{ biz_id[i] }}"
+                        type="submit">Like</button>
             </div>
             </form>
             <div class="yelp-button">
@@ -66,6 +67,16 @@
     <br>
     {% endfor %}
     {% endif %}
+
+
+    <script>
+        document.getElementsById("like").addEventListener("click", myFunction);
+
+        function myFunction() {
+            document.getElementsById("like").innerHTML = "LIKED!";
+        }
+    </script>
+
 </body>
 
 </html>

@@ -92,8 +92,7 @@ def like():
     if not liked_restaurants:
         db.session.add(LikedBiz(business_id=business_id, username=username))
         db.session.commit()
-    return flask.redirect(flask.url_for("profile"))
-    # return flask.redirect(flask.request.referrer)
+    return flask.redirect(flask.request.referrer)
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -163,8 +162,12 @@ def get_party_rec():
 @login_required
 def profile():
     username = current_user.username
+
     """Loads profile webpage"""
-    return flask.render_template("profile.html", username=username)
+    return flask.render_template(
+        "profile.html",
+        username=username,
+    )
 
 
 @app.route("/search", methods=["GET", "POST"])
