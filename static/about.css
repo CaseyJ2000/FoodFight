@@ -39,7 +39,7 @@
 }
 @media (min-width: 769px) {
   .gradient-custom-2 {
-    border-top-right-radius: 0.3rem;
+    border-top-right-radius: 0rem;
     border-bottom-right-radius: 0.3rem;
   }
 }
@@ -61,6 +61,14 @@
   float: left;
 }
 
+#floatRight {
+  float: right;
+}
+
+#float_with_padding {
+  float: right;
+}
+
 .wrapper li a {
   display: block;
   color: white;
@@ -70,6 +78,18 @@
 }
 
 .wrapper li a:hover {
-  color: #161919;
+  color: #000000;
   background: rgba(#dd3675, #b44593);
+}
+
+.imagedropshadow {
+  padding: 3px;
+  border: solid 1px #efefef;
+}
+
+a:hover img.imagedropshadow {
+  border: solid 1px rgb(255, 255, 255);
+  -moz-box-shadow: 1px 1px 5px rgb(255, 255, 255);
+  -webkit-box-shadow: 1px 1px 5px rgb(255, 255, 255);
+  box-shadow: 1px 1px 5px rgb(255, 255, 255);
 }
