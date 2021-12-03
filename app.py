@@ -26,7 +26,7 @@ if uri.startswith("postgres://"):
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = os.getenv("SECRET_KEY")
-NUM_OF_PARTY_RECS = 5
+NUM_OF_PARTY_RECS = 25
 db = SQLAlchemy(app)
 
 

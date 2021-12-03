@@ -143,6 +143,9 @@ dfn {
   font-style: italic;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
 
 /**
  * Add the correct background and color in IE 9-.
@@ -531,6 +534,7 @@ legend {
   color: #9a9a9a;
   font-size: 20px;
 }
+<<<<<<< HEAD
 
 =======
 
@@ -923,6 +927,9 @@ legend {
 }
 
 >>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
+=======
+
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
 .s01 form .inner-form .input-field input:hover,
 .s01 form .inner-form .input-field input:focus {
   box-shadow: none;
@@ -956,7 +963,10 @@ legend {
   border: 0;
   cursor: pointer;
 <<<<<<< HEAD
+<<<<<<< HEAD
   
+=======
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
 =======
 >>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
 }
@@ -1004,15 +1014,21 @@ legend {
     width: calc(50% - 10px);
     min-width: auto;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
   }
   .s01 form .inner-form .input-field.third-wrap {
     width: calc(50% - 10px);
   }
+<<<<<<< HEAD
 =======
   }
   .s01 form .inner-form .input-field.third-wrap {
     width: calc(50% - 10px);
   }
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
+=======
 >>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
   .s01 form .inner-form .input-field.third-wrap .btn-search {
     font-size: 16px;
@@ -1050,6 +1066,7 @@ legend {
   border: 0;
   border-radius: 4px;
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 .field-title {
@@ -1262,6 +1279,9 @@ a{
 }
 =======
 
+=======
+
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
 .field-title {
   position: absolute;
   top: -30.5px;
@@ -1493,4 +1513,7 @@ a {
   background: #dd3675;
   color: whitesmoke;
 }
+<<<<<<< HEAD
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
+=======
 >>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
