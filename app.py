@@ -188,6 +188,10 @@ def profile():
         image=restaurant_details["image"],
         yelp_url=restaurant_details["yelp_url"],
         rating=restaurant_details["rating"],
+        category=restaurant_details["category"],
+        review_count=restaurant_details["review_count"],
+        location_city=restaurant_details["location_city"],
+        location_state=restaurant_details["location_state"],
         length=restaurant_details["length"],
     )
 
