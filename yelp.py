@@ -1,10 +1,7 @@
+"""Handles all requests to the yelp api"""
 import os
 import requests
-import json
-import flask
 from dotenv import load_dotenv, find_dotenv
-from requests.api import get, request
-
 
 load_dotenv(find_dotenv())
 
@@ -12,31 +9,75 @@ CLIENT_ID = os.getenv("CLIENT_ID")
 
 API_KEY = os.getenv("API_KEY")
 BASE_URL = "https://api.yelp.com/v3/businesses/search"
-HEADERS = {"Authorization": "Bearer %s" % API_KEY}
+HEADERS = {"Authorization": f"Bearer {API_KEY}"}
+URL_ID = "https://api.yelp.com/v3/businesses/"
 
 
-def getRestaurant(term, location):
-    PARAMETERS = {"term": term, "location": location}
+def get_restaurant(term, location):
+    """Method to search for restaurants"""
+    parameters = {"term": term, "location": location}
 
-    response = requests.get(url=BASE_URL, params=PARAMETERS, headers=HEADERS)
+    response = requests.get(url=BASE_URL, params=parameters, headers=HEADERS)
     data = response.json()
-
-    id = []
+    restaurant_ids = []
     name = []
     location = []
     image = []
-    datalist = []
+    yelp_url = []
+    category = []
+    review_count = []
+    rating = []
+    transactions = []
+    location_state = []
+
     for i in data["businesses"]:
-        id.append(i["id"])
+        restaurant_ids.append(i["id"])
         name.append(i["name"])
         location.append(i["location"]["city"])
         image.append(i["image_url"])
+        yelp_url.append(i["url"])
+        category.append(i["categories"][0]["title"])
+        review_count.append(i["review_count"])
+        rating.append(i["rating"])
+        transactions.append(i["transactions"])
+        location_state.append(i["location"]["state"])
 
-        # DATA = {"id": id, "name": name, "location": location, "image": image}
-        # datalist = []
-        # datalist.append(DATA)
-        # biz_id = id
-        # biz_name = name
-        # biz_image = image
-        # biz_location = location
-    return (name, image, location, id)
+    return (
+        name,
+        image,
+        location,
+        restaurant_ids,
+        yelp_url,
+        category,
+        review_count,
+        rating,
+        transactions,
+        location_state,
+    )
+
+
+def get_restaurant_details(restaurant_dict, num_of_restaurants):
+    """Returns infomation on the business ids in a dict passed to"""
+    i = 0
+    name = []
+    image = []
+    yelp_url = []
+    rating = []
+    length = min(len(restaurant_dict), num_of_restaurants)
+    for key in restaurant_dict.keys():
+        if i == num_of_restaurants:
+            break
+        response = requests.get(url=URL_ID + key, headers=HEADERS)
+        data = response.json()
+        name.append(data["name"])
+        image.append(data["image_url"])
+        yelp_url.append(data["url"])
+        rating.append(data["rating"])
+
+    return {
+        "name": name,
+        "image": image,
+        "yelp_url": yelp_url,
+        "rating": rating,
+        "length": length,
+    }

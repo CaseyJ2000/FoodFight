@@ -1,41 +1,71 @@
-<!DOCTYPE html>
-
 <html>
 
 <head>
-    <link rel="stylesheet" href={{ url_for( 'static' , filename='search.css' ) }} />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/static/search.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="http://cdn.onlinewebfonts.com/svg/img_481531.png" />
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
 </head>
 
 <body>
-    <form action="/search" method="POST" class="search-box">
-        <div class="search">
-            <div class="left-side">
-                <input type="text" size="30" name="term" placeholder="sushi, coffee, etc" class="field request">
-                <div class="field-wrapper">
-                    <span class="field-title find">Find</span>
+    <div class="wrapper">
+        <ul>
+            <li><a href="/menu">Menu</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/party">Create a Party</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/signup">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="s01">
+        <form action="/search" method="POST">
+            <div class="inner-form">
+                <div class="input-field first-wrap">
+                    <input id="search" name="term" type="text" placeholder="What kind of food are you looking for?" />
+                </div>
+                <div class="input-field second-wrap">
+                    <input id="location" name="location" type="text" placeholder="City, State, Zip, Whatever" />
+                </div>
+                <div class="input-field third-wrap">
+                    <button class="btn-search" value="Search" type="submit">Search</button>
                 </div>
             </div>
-            <div class="right-side">
-                <input type="text" size="30" name="location" placeholder="city, zipcode" class="field request">
-                <div class="field-wrapper">
-                    <span class="field-title near">Near</span>
-                </div>
-            </div>
-            <input type="submit" value="Search" class="search-button">
-        </div>
-        </div>
-    </form>
+        </form>
+    </div>
 
     {% if search_query %}
     {%for i in range (0, 20)%}
-    <h2>{{ name [i] }} </h2>
-    <div class="box">
-        <img src="{{ image [i]}}" width=300 height=300 />
-    </div class="box">
-        <form action="/like" method="POST" class="search-box" onsubmit="return false">
-            <button onclick="toggle()" name="Like" value="{{ biz_id[i] }}" id="myButton" type="submit">Like</button>  
-        </form> 
-        
+    <br>
+    <div class="outerbox">
+        <div class="box">
+            <h2 class="title">{{ name [i] }} </h2>
+            <img class="food_image" src="{{ image [i]}}" width=300 height=300 />
+            <div class="right-side">
+                <h3 class="fa fa-star checked"> {{ rating [i]}} Rating </h3>
+                <!-- <h4 class="chip alias"> {{ category [i]}} </h4> -->
+                <h4 class="chip alias"> {{ category [i]}} </h4>
+                <!-- <h4 class="chip transactions"> {{ transactions [i]}} </h4> -->
+                <h4> {{ location [i]}}, {{ location_state [i]}} </h4>
+                <h4> {{ review_count [i]}} Reviews </h4>
+            </div>
+            <div class="like-box">
+                <form action="/like" method="POST" class="search-box" onsubmit="return false">
+                    <button class="like-button" name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
+            </div>
+            </form>
+            <div class="yelp-button">
+                <span><a href="{{yelp_url[i]}}">Find on Yelp </a></span>
+            </div>
+        </div class="box">
+    </div>
+    <br>
+    <br>
     {% endfor %}
     {% endif %}
 </body>
