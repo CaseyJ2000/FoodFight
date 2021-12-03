@@ -87,7 +87,8 @@ def like():
         return flask.redirect(flask.request.referrer)
     username = current_user.username
     liked_restaurants = LikedBiz.query.filter_by(
-        username=username, business_id=business_id).first()
+        username=username, business_id=business_id
+    ).first()
     if not liked_restaurants:
         db.session.add(LikedBiz(business_id=business_id, username=username))
         db.session.commit()
@@ -131,8 +132,7 @@ def get_party_rec():
         party_members = people_in_party.split(" ")
         restaurant_dict = {}
         for user in party_members:
-            current_party_member = LikedBiz.query.filter_by(
-                username=user).all()
+            current_party_member = LikedBiz.query.filter_by(username=user).all()
             if current_party_member == []:
                 flask.flash(f"{user} could not be found")
             for row in current_party_member:
@@ -142,12 +142,10 @@ def get_party_rec():
                     new_amount = restaurant_dict.get(row.business_id) + 1
                     restaurant_dict.update({row.business_id: new_amount})
         sorted_dict = dict(
-            sorted(restaurant_dict.items(),
-                   key=operator.itemgetter(1),
-                   reverse=True))
+            sorted(restaurant_dict.items(), key=operator.itemgetter(1), reverse=True)
+        )
 
-        restaurant_details = get_restaurant_details(sorted_dict,
-                                                    NUM_OF_PARTY_RECS)
+        restaurant_details = get_restaurant_details(sorted_dict, NUM_OF_PARTY_RECS)
         return flask.render_template(
             "party.html",
             recieved_party_data=True,
@@ -164,8 +162,34 @@ def get_party_rec():
 @app.route("/profile")
 @login_required
 def profile():
+    username = current_user.username
+    liked_biz = LikedBiz.query.filter_by(username=username).all()
+
+    user_liked = {}
+
+    for row in liked_biz:
+        if user_liked.get(row.business_id) is None:
+            user_liked.update({row.business_id: 1})
+    liked_rest = dict(
+        sorted(user_liked.items(), key=operator.itemgetter(1), reverse=True)
+    )
+    liked_len = len(user_liked)
+
+    restaurant_details = get_restaurant_details(liked_rest, liked_len)
+
     """Loads profile webpage"""
-    return flask.render_template("profile.html")
+    return flask.render_template(
+        "profile.html",
+        username=username,
+        has_liked_biz=True,
+        liked_biz=liked_biz,
+        user_liked=user_liked,
+        name=restaurant_details["name"],
+        image=restaurant_details["image"],
+        yelp_url=restaurant_details["yelp_url"],
+        rating=restaurant_details["rating"],
+        length=restaurant_details["length"],
+    )
 
 
 @app.route("/search", methods=["GET", "POST"])
@@ -240,8 +264,7 @@ def signup():
             return flask.redirect(flask.url_for("signup"))
         user = User.query.filter_by(username=username).first()
         if user:
-            flask.flash(
-                "Email already in use, please retry with a different email!")
+            flask.flash("Email already in use, please retry with a different email!")
             return flask.redirect(flask.url_for("signup"))
 
         new_user = User(
@@ -285,6 +308,6 @@ def main():
 
 
 if __name__ == "__main__":
-    app.run(host=os.getenv("IP", "0.0.0.0"),
-            port=int(os.getenv("PORT", "8081")),
-            debug=True)
+    app.run(
+        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8081")), debug=True
+    )

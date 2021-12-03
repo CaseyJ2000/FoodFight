@@ -11,21 +11,68 @@
 
     <div class="wrapper">
         <ul>
-          <li><a href="/menu">Menu</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/search">Search</a></li>
-          <li><a href="/party">Create a Party</a></li>
-          <li id="floatRight"><a href="/signup">Logout</a></li>
-          <li id="float_with_padding"><a href="/profile"><img class="imagedropshadow" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iconsdb.com%2Ficons%2Fpreview%2Fwhite%2Fuser-4-xxl.png&f=1&nofb=1" alt="profile" height="30" width="30" ></a></li>
+            <li><a href="/menu">Menu</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/party">Create a Party</a></li>
+            <li id="floatRight"><a href="/login">Logout</a></li>
+            <li id="float_with_padding"><a href="/profile"><img class="imagedropshadow"
+                        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iconsdb.com%2Ficons%2Fpreview%2Fwhite%2Fuser-4-xxl.png&f=1&nofb=1"
+                        alt="profile" height="30" width="30"></a></li>
         </ul>
     </div>
+
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-7">
+                <div class="card p-3 py-4">
+                    <div class="text-center"> <img
+                            src="https://www.hecmsenior.com/wp-content/uploads/2021/06/Profile-Pic-Icon.png" width="100"
+                            class="rounded-circle"> </div>
+                    <div class="text-center mt-3"> <span class="bg-secondary p-1 px-4 rounded text-white">User</span>
+                        <h5 class="mt-2 mb-0"> Welcome, {{username}}! </h5> <span></span>
+                        <div class="px-4 mt-1">
+                            <p class="fonts"> UNDER CONSTRUCTION </p>
+                        </div>
+                        <!-- <ul class="social-list">
+                            <li><i class="fa fa-facebook"></i></li>
+                            <li><i class="fa fa-dribbble"></i></li>
+                            <li><i class="fa fa-instagram"></i></li>
+                            <li><i class="fa fa-linkedin"></i></li>
+                            <li><i class="fa fa-google"></i></li>
+                        </ul> -->
+                        <div class="buttons"> <button class="btn btn-outline-primary px-4"> See Liked
+                                Restaurants</button> <button class="btn btn-primary px-4 ms-3"> View Party </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% if has_liked_biz %}
+    {%for i in range (0, length)%}
+    <br>
+    <h2 class="title">{{name [i]}}</h2>
+    <img src="{{ image [i] }}" width=300 height=300 />
+    <p class="rating"> &#9733; {{ rating[i] }}</p>
+    <a href="{{ yelp_url[i] }}">Link to Yelp Page</a>
+
+    <br>
+    <br>
+    {% endfor %}
+    {% endif %}
+
+
+
+
 
     <!-- <div class="nav">
         <div class="text-center">
             <h2> UNDER CONSTRUCTION </h2>
             <a href="/delete">Delete your account</a>
             <a href="/menu"> Back to Menu</a>
-
         </div>
     </div> -->
 
