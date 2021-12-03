@@ -673,13 +673,6 @@ legend {
 
 .right-side {
   float: left;
-  /* position: relative; */
-  /* display: inline-block;
-  width: 480px;
-  box-sizing: border-box;
-  margin-left: 0;
-  vertical-align: top;
-  text-align: right; */
 }
 
 .field.request {
@@ -879,3 +872,5 @@ a {
   background: #dd3675;
   color: whitesmoke;
 }
+
+
