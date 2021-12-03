@@ -12,7 +12,7 @@ from flask_login import (
     UserMixin,
     login_required,
 )
-from flask import flash
+from flask import Flask, render_template, request, redirect, flash
 import flask
 from werkzeug.security import generate_password_hash, check_password_hash
 from yelp import get_restaurant, get_restaurant_details
@@ -204,8 +204,9 @@ def search_results():
                 error_msg = "location empty"
             else:
                 error_msg = "no results found"
-
-            return flask.render_template("error.html", error_msg=error_msg)
+            flask.flash(error_msg)
+            # return flask.redirect(flask.url_for("search"))
+            return flask.render_template("search.html")
 
         name = restaurant_info[0]
         image = restaurant_info[1]

@@ -38,6 +38,15 @@
             </div>
         </form>
     </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+        {% for messages in messages %}
+            <strong style="color:red;";>{{ messages }}</strong>
+        {%endfor%}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
     {% if search_query %}
     {%for i in range (0, 20)%}
@@ -55,7 +64,7 @@
                 <h4> {{ review_count [i]}} Reviews </h4>
             </div>
             <div class="like-box">
-                <form action="/like" method="POST" class="search-box" onsubmit="return false">
+                <form action="/like" method="POST" class="search-box">
                     <button class="like-button" name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
             </div>
             </form>
