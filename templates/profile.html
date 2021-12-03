@@ -28,33 +28,7 @@
 
         </div>
     </div> -->
-    {% if recieved_party_data %}
-    {% if search_query %}
-    {%for i in range (0, length)%}
-    <br>
-    <div class="outerbox">
-            <div class="box">
-                <h2 class="title">{{ name [i] }} </h2>
-                <img class="food_image" src="{{ image [i] }}" width=300 height=300 />
-
-                <form action="/like" method="POST" class="search-box">
-                    <button name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
-                    
-                <form action="/unlike" method="POST" class="search-box">
-                    <button name="Unlike" value="{{ biz_id[i] }}" type="submit">Unlike</button>
-                    
-                <div class="link-box">
-                    <a href="{{yelp_url[i]}}"> Find on Yelp </a>
-                </div>
-
-            </form>
-        </div class="box">
-    </div>
-    <br>
-    <br>
-    {% endfor %}
-    {% endif %}
-    {% endif %}
+    
 </body>
 
 </html>
