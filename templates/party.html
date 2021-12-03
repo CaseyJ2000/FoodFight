@@ -60,10 +60,6 @@
     {% endwith %}
     <!-- Get length of results and print -->
     {% if recieved_party_data %}
-<<<<<<< HEAD
-    <!-- {% if search_query %} -->
-=======
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
     {%for i in range (0, length)%}
     <br>
     <div class="box">
@@ -71,24 +67,13 @@
         <img class="food_image" src="{{ image [i] }}" width=300 height=300 />
         <p class="rating"> &#9733; {{ rating[i] }}</p>
         <a href="{{ yelp_url[i] }}">Link to Yelp Page</a>
-<<<<<<< HEAD
-        <!-- <div class="unlike-box">
-            <form action="/unlike" method="POST" class="search-box" onsubmit="return false">
-                <button class="unlike-button" name="Unlike" value="{{ biz_id[i] }}" type="submit">Unlike</button> -->
-        <!-- </div> -->
-=======
 
 
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
     </div>
     <br>
     <br>
     {% endfor %}
     {% endif %}
-<<<<<<< HEAD
-    <!-- {% endif %} -->
-=======
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
 </body>
 
 
