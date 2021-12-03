@@ -4,6 +4,7 @@ import re
 import os
 import operator
 from dotenv import load_dotenv, find_dotenv
+from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     login_user,
@@ -25,7 +26,7 @@ if uri.startswith("postgres://"):
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = os.getenv("SECRET_KEY")
-NUM_OF_PARTY_RECS = 5
+NUM_OF_PARTY_RECS = 25
 db = SQLAlchemy(app)
 
 
@@ -162,11 +163,32 @@ def get_party_rec():
 @login_required
 def profile():
     username = current_user.username
+    liked_biz = LikedBiz.query.filter_by(username=username).all()
+
+    user_liked = {}
+
+    for row in liked_biz:
+        if user_liked.get(row.business_id) is None:
+            user_liked.update({row.business_id: 1})
+    liked_rest = dict(
+        sorted(user_liked.items(), key=operator.itemgetter(1), reverse=True)
+    )
+    liked_len = len(user_liked)
+
+    restaurant_details = get_restaurant_details(liked_rest, liked_len)
 
     """Loads profile webpage"""
     return flask.render_template(
         "profile.html",
         username=username,
+        has_liked_biz=True,
+        liked_biz=liked_biz,
+        user_liked=user_liked,
+        name=restaurant_details["name"],
+        image=restaurant_details["image"],
+        yelp_url=restaurant_details["yelp_url"],
+        rating=restaurant_details["rating"],
+        length=restaurant_details["length"],
     )
 
 

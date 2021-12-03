@@ -54,6 +54,18 @@
     </div>
 
 
+    {% if has_liked_biz %}
+    {%for i in range (0, length)%}
+    <!-- <h2 class>{{ user_liked [i]}} </h2> -->
+    <h2>{{name [i]}}</h2>
+    <img class="food_image" src="{{ image [i] }}" width=300 height=300 />
+    <p class="rating"> &#9733; {{ rating[i] }}</p>
+    <a href="{{ yelp_url[i] }}">Link to Yelp Page</a>
+    {% endfor %}
+    {% endif %}
+
+
+
     <!-- <div class="nav">
         <div class="text-center">
             <h2> UNDER CONSTRUCTION </h2>
