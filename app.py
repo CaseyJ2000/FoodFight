@@ -93,8 +93,9 @@ def like():
     if not liked_restaurants:
         db.session.add(LikedBiz(business_id=business_id, username=username))
         db.session.commit()
-    return flask.redirect(flask.url_for("profile"))
+    # return flask.redirect(flask.url_for("profile"))
     # return flask.redirect(flask.request.referrer)
+    return flask.render_template("search.html")
 
 
 @app.route("/unlike", methods=["POST"])
@@ -205,7 +206,6 @@ def search_results():
             else:
                 error_msg = "no results found"
             flask.flash(error_msg)
-            # return flask.redirect(flask.url_for("search"))
             return flask.render_template("search.html")
 
         name = restaurant_info[0]

@@ -11,12 +11,21 @@
 <body>
     <div class="wrapper">
         <ul>
+<<<<<<< HEAD
             <li><a href="/menu">Menu</a></li>
             <li><a href="/about">About</a></li>
             <li><a href="/search">Search</a></li>
             <li><a href="/party">Create a Party</a></li>
             <li><a href="/profile">Profile</a></li>
             <li><a href="/signup">Logout</a></li>
+=======
+          <li><a href="/menu">Menu</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/search">Search</a></li>
+          <li><a href="/party">Create a Party</a></li>
+          <li id="floatRight"><a href="/signup">Logout</a></li>
+          <li id="float_with_padding"><a href="/profile"><img class="imagedropshadow" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iconsdb.com%2Ficons%2Fpreview%2Fwhite%2Fuser-4-xxl.png&f=1&nofb=1" alt="profile" height="30" width="30" ></a></li>
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
         </ul>
     </div>
 
@@ -51,7 +60,10 @@
     {% endwith %}
     <!-- Get length of results and print -->
     {% if recieved_party_data %}
+<<<<<<< HEAD
     <!-- {% if search_query %} -->
+=======
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
     {%for i in range (0, length)%}
     <br>
     <div class="box">
@@ -59,16 +71,24 @@
         <img class="food_image" src="{{ image [i] }}" width=300 height=300 />
         <p class="rating"> &#9733; {{ rating[i] }}</p>
         <a href="{{ yelp_url[i] }}">Link to Yelp Page</a>
+<<<<<<< HEAD
         <!-- <div class="unlike-box">
             <form action="/unlike" method="POST" class="search-box" onsubmit="return false">
                 <button class="unlike-button" name="Unlike" value="{{ biz_id[i] }}" type="submit">Unlike</button> -->
         <!-- </div> -->
+=======
+
+
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
     </div>
     <br>
     <br>
     {% endfor %}
     {% endif %}
+<<<<<<< HEAD
     <!-- {% endif %} -->
+=======
+>>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
 </body>
 
 

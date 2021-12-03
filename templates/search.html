@@ -11,6 +11,7 @@
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
 </head>
 
+</script>
 <body>
     <div class="wrapper">
         <ul>
@@ -66,17 +67,20 @@
             <div class="like-box">
                 <form action="/like" method="POST" class="search-box">
                     <button class="like-button" name="Like" value="{{ biz_id[i] }}" type="submit">Like</button>
+                        
             </div>
             </form>
             <div class="yelp-button">
                 <span><a href="{{yelp_url[i]}}">Find on Yelp </a></span>
             </div>
         </div class="box">
+        
     </div>
     <br>
     <br>
     {% endfor %}
     {% endif %}
+
 </body>
 
 </html>
