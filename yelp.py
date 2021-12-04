@@ -63,6 +63,10 @@ def get_restaurant_details(restaurant_dict, num_of_restaurants):
     image = []
     yelp_url = []
     rating = []
+    category = []
+    review_count = []
+    location_city = []
+    location_state = []
     length = min(len(restaurant_dict), num_of_restaurants)
     for key in restaurant_dict.keys():
         if i == num_of_restaurants:
@@ -73,6 +77,10 @@ def get_restaurant_details(restaurant_dict, num_of_restaurants):
         image.append(data["image_url"])
         yelp_url.append(data["url"])
         rating.append(data["rating"])
+        category.append(data["categories"][0]["title"])
+        review_count.append(data["review_count"])
+        location_city.append(data["location"]["city"])
+        location_state.append(data["location"]["state"])
 
     return {
         "name": name,
@@ -80,4 +88,8 @@ def get_restaurant_details(restaurant_dict, num_of_restaurants):
         "yelp_url": yelp_url,
         "rating": rating,
         "length": length,
+        "category": category,
+        "review_count": review_count,
+        "location_city": location_city,
+        "location_state": location_state,
     }

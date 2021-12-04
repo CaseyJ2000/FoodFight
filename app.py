@@ -180,8 +180,38 @@ def get_party_rec():
 @app.route("/profile")
 @login_required
 def profile():
+    username = current_user.username
+    liked_biz = LikedBiz.query.filter_by(username=username).all()
+
+    user_liked = {}
+
+    for row in liked_biz:
+        if user_liked.get(row.business_id) is None:
+            user_liked.update({row.business_id: 1})
+    liked_rest = dict(
+        sorted(user_liked.items(), key=operator.itemgetter(1), reverse=True)
+    )
+    liked_len = len(user_liked)
+
+    restaurant_details = get_restaurant_details(liked_rest, liked_len)
+
     """Loads profile webpage"""
-    return flask.render_template("profile.html")
+    return flask.render_template(
+        "profile.html",
+        username=username,
+        has_liked_biz=True,
+        liked_biz=liked_biz,
+        user_liked=user_liked,
+        name=restaurant_details["name"],
+        image=restaurant_details["image"],
+        yelp_url=restaurant_details["yelp_url"],
+        rating=restaurant_details["rating"],
+        category=restaurant_details["category"],
+        review_count=restaurant_details["review_count"],
+        location_city=restaurant_details["location_city"],
+        location_state=restaurant_details["location_state"],
+        length=restaurant_details["length"],
+    )
 
 
 @app.route("/search", methods=["GET", "POST"])
