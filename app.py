@@ -12,6 +12,7 @@ from flask_login import (
     UserMixin,
     login_required,
 )
+from flask import Flask, render_template, request, redirect, flash
 import flask
 from werkzeug.security import generate_password_hash, check_password_hash
 from yelp import get_restaurant, get_restaurant_details
@@ -92,7 +93,24 @@ def like():
     if not liked_restaurants:
         db.session.add(LikedBiz(business_id=business_id, username=username))
         db.session.commit()
-    # return flask.redirect(flask.url_for("search_results"))
+    # return flask.redirect(flask.url_for("profile"))
+    # return flask.redirect(flask.request.referrer)
+    return flask.render_template("search.html")
+
+
+@app.route("/unlike", methods=["POST"])
+def unlike():
+
+    business_id = flask.request.form.get("Unlike")
+    if business_id == "":
+        return flask.redirect(flask.request.referrer)
+    username = current_user.username
+    liked_restaurants = LikedBiz.query.filter_by(
+        username=username, business_id=business_id
+    ).first()
+    if liked_restaurants:
+        db.session.delete(LikedBiz(business_id=business_id, username=username))
+        db.session.commit()
     return flask.redirect(flask.request.referrer)
 
 
@@ -217,8 +235,8 @@ def search_results():
                 error_msg = "location empty"
             else:
                 error_msg = "no results found"
-
-            return flask.render_template("error.html", error_msg=error_msg)
+            flask.flash(error_msg)
+            return flask.render_template("search.html")
 
         name = restaurant_info[0]
         image = restaurant_info[1]

@@ -13,6 +13,7 @@
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
 </head>
 
+</script>
 <body>
     <div class="wrapper">
         <ul>
@@ -42,7 +43,16 @@
             </div>
         </form>
     </div>
-
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+        {% for messages in messages %}
+            <strong style="color:red;";>{{ messages }}</strong>
+        {%endfor%}
+            </ul>
+        {% endif %}
+    {% endwith %}
     {% if search_query %}
     {%for i in range (0, 20)%}
     <br>
@@ -92,6 +102,7 @@
     <br>
     {% endfor %}
     {% endif %}
+
 </body>
 
 </html>
