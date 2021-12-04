@@ -12,7 +12,6 @@ from flask_login import (
     UserMixin,
     login_required,
 )
-from flask import Flask, render_template, request, redirect, flash
 import flask
 from werkzeug.security import generate_password_hash, check_password_hash
 from yelp import get_restaurant, get_restaurant_details
@@ -100,6 +99,7 @@ def like():
 
 @app.route("/unlike", methods=["POST"])
 def unlike():
+    """Endpoint for unlike"""
     business_id = flask.request.form.get("Unlike")
     if business_id == "":
         return flask.redirect(flask.request.referrer)
@@ -175,6 +175,7 @@ def get_party_rec():
 @app.route("/profile")
 @login_required
 def profile():
+    """Endpoint for profile"""
     username = current_user.username
     liked_biz = LikedBiz.query.filter_by(username=username).all()
 
@@ -187,9 +188,8 @@ def profile():
         sorted(user_liked.items(), key=operator.itemgetter(1), reverse=True)
     )
     liked_len = len(user_liked)
-
     restaurant_details = get_restaurant_details(liked_rest, liked_len)
-    """Loads profile webpage"""
+
     return flask.render_template(
         "profile.html",
         username=username,
