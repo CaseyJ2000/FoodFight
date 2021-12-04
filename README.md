@@ -7,8 +7,10 @@
 - [App Description](#App-Description)
 - [Installation Requirements](#Installation-Requirements)
 - [Local Setup](#Local-Setup)
-- [Known Issues](#Known-Issues)
+- [Features](#Features)
 - [Linting](#Linting)
+- [Technologies](#Techologies)
+- [Contributors](#Contributors)
 
 
 ##  App Description 
@@ -54,10 +56,44 @@ export CLIENT_ID = "<insert client id>"
 
 2. run `python3 app.py` 
 
-## Known Issues
-After clicking the like button for a restaurant, you are redirected to the search page where you would need to search for restaurants again instead of it keeping you on the same page that shows all the restaurants with their corresponding like button.
+# Features
+### Search 
+You are able to search for a restaurant by name or by cuisine and supplying it with a location will yield results.
+
+### Like a Restaurant
+You are able to like restaurants after searching for your desired restaurant or cuisine of food!
+
+### Create a Party
+You are able to create a party with other registered user's emails seperated by a space to display you and your party's liked restuarants. The Restaurants displayed are sorted in a way that the restaurants with multiple likes across party memebers will be displayed at the top.
+
+### Unlike a restaurant
+You are able to remove a restaurant off of your profile by clicking the unlike button next to the restaurants in your profile page.
+
+### Delete an account
+You are able to delete an account by entering in the desired email that you want to remove.
+
+### Profile Page
+This displays the current logged in user's liked restaurants and allows you to unlike/remove any restaurants.
 
 # Linting
 The no-member error is being ignored in pylint. This is the case because the code will still continue to run and pylint is having a false postive.
 
-README is still a work in progress
+# Technologies 
+- Flask Framework
+- HTML
+- CSS/Bootstrap for styling
+- Yelp API to get restaurant details such as location, ratings, and yelp url
+- PostgreSQL to store User's emails and yelp business IDs
+
+
+# Contributors 
+[Casey Jobe](https://github.com/CaseyJ2000)
+
+[Owen Bochner](https://github.com/owenbochner)
+
+[Stephanie Olele](https://github.com/steph-o21)
+
+[Sydney Yim](https://github.com/syim12)
+
+[Victor Lam](https://github.com/Vikcho)
+
