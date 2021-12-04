@@ -94,7 +94,7 @@ def like():
         db.session.commit()
     # return flask.redirect(flask.url_for("profile"))
     # return flask.redirect(flask.request.referrer)
-    return flask.render_template("search.html")
+    return flask.render_template("profile.html")
 
 
 @app.route("/unlike", methods=["POST"])
