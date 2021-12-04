@@ -63,7 +63,7 @@
             </div>
         </div>
 
-
+        
         {% if has_liked_biz %}
         {%for i in range (0, length)%}
         <br>
@@ -102,7 +102,9 @@
                                 </div>
                                 <form action="/unlike" method="POST">
                                     <div class="d-flex pt-1">
-                                        <button name="unlike" value=""
+                                        <button name="Unlike" value="{{
+                                            biz_id[i]
+                                            }}"
                                             type="submit" class="btn
                                             btn-outline-danger me-1
                                             flex-grow-1">Unlike</button>

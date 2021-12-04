@@ -61,6 +61,7 @@ def get_restaurant_details(restaurant_dict, num_of_restaurants):
     i = 0
     name = []
     image = []
+    biz_id = []
     yelp_url = []
     rating = []
     category = []
@@ -77,11 +78,11 @@ def get_restaurant_details(restaurant_dict, num_of_restaurants):
         image.append(data["image_url"])
         yelp_url.append(data["url"])
         rating.append(data["rating"])
+        biz_id.append(data["id"])
         category.append(data["categories"][0]["title"])
         review_count.append(data["review_count"])
         location_city.append(data["location"]["city"])
         location_state.append(data["location"]["state"])
-
     return {
         "name": name,
         "image": image,
@@ -89,6 +90,7 @@ def get_restaurant_details(restaurant_dict, num_of_restaurants):
         "rating": rating,
         "length": length,
         "category": category,
+        "biz_id": biz_id,
         "review_count": review_count,
         "location_city": location_city,
         "location_state": location_state,

@@ -100,17 +100,13 @@ def like():
 
 @app.route("/unlike", methods=["POST"])
 def unlike():
-
     business_id = flask.request.form.get("Unlike")
+    print(business_id)
     if business_id == "":
         return flask.redirect(flask.request.referrer)
     username = current_user.username
-    liked_restaurants = LikedBiz.query.filter_by(
-        username=username, business_id=business_id
-    ).first()
-    if liked_restaurants:
-        db.session.delete(LikedBiz(business_id=business_id, username=username))
-        db.session.commit()
+    LikedBiz.query.filter_by(username=username, business_id=business_id).delete()
+    db.session.commit()
     return flask.redirect(flask.request.referrer)
 
 
@@ -194,7 +190,7 @@ def profile():
     liked_len = len(user_liked)
 
     restaurant_details = get_restaurant_details(liked_rest, liked_len)
-
+    print(restaurant_details["biz_id"])
     """Loads profile webpage"""
     return flask.render_template(
         "profile.html",
@@ -204,6 +200,7 @@ def profile():
         user_liked=user_liked,
         name=restaurant_details["name"],
         image=restaurant_details["image"],
+        biz_id=restaurant_details["biz_id"],
         yelp_url=restaurant_details["yelp_url"],
         rating=restaurant_details["rating"],
         category=restaurant_details["category"],

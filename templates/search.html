@@ -52,7 +52,15 @@
                 </div>
             </form>
         </div>
-
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for messages in messages %}
+            <strong style="color:red;" ;>{{ messages }}</strong>
+            {%endfor%}
+        </ul>
+        {% endif %}
+        {% endwith %}
         {% if search_query %}
         {%for i in range (0, 20)%}
         <br>
