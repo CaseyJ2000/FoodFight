@@ -49,11 +49,14 @@
                                     liked restaurants
                                     are listed below </p>
                             </div>
-                            <button name="delete_account" value=""
-                                type="submit" class="btn
-                                btn-outline-danger me-1
-                                flex-grow-1">Delete Account
-                            </button>
+                            <form action="/delete">
+                                <button name="delete_account"
+                                    value="{{username}}"
+                                    type="submit" class="btn
+                                    btn-outline-danger me-1
+                                    flex-grow-1">Delete Account
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -97,12 +100,12 @@
                                         <p class="mb-0">{{ review_count [i]}}</p>
                                     </div>
                                 </div>
-                                <form action="/like" method="POST">
+                                <form action="/unlike" method="POST">
                                     <div class="d-flex pt-1">
-                                        <button name="Like" value=""
+                                        <button name="unlike" value=""
                                             type="submit" class="btn
                                             btn-outline-danger me-1
-                                            flex-grow-1">Dislike</button>
+                                            flex-grow-1">Unlike</button>
                                         <a href="{{yelp_url[i]}}"><button
                                                 type="button" class="btn
                                                 flex-grow-1" style="background:

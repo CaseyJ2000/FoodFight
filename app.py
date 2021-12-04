@@ -263,7 +263,6 @@ def search_results():
             transactions=transactions,
             location_state=location_state,
         )
-
     return flask.render_template("search.html")
 
 
