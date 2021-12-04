@@ -101,7 +101,6 @@ def like():
 @app.route("/unlike", methods=["POST"])
 def unlike():
     business_id = flask.request.form.get("Unlike")
-    print(business_id)
     if business_id == "":
         return flask.redirect(flask.request.referrer)
     username = current_user.username
@@ -190,7 +189,6 @@ def profile():
     liked_len = len(user_liked)
 
     restaurant_details = get_restaurant_details(liked_rest, liked_len)
-    print(restaurant_details["biz_id"])
     """Loads profile webpage"""
     return flask.render_template(
         "profile.html",
