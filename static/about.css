@@ -39,15 +39,9 @@
 }
 @media (min-width: 769px) {
   .gradient-custom-2 {
-<<<<<<< HEAD
-<<<<<<< HEAD
     border-top-right-radius: 0.3rem;
-=======
     border-top-right-radius: 0rem;
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
-=======
     border-top-right-radius: 0rem;
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
     border-bottom-right-radius: 0.3rem;
   }
 }
@@ -69,11 +63,6 @@
   float: left;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
 #floatRight {
   float: right;
 }
@@ -82,10 +71,6 @@
   float: right;
 }
 
-<<<<<<< HEAD
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
-=======
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
 .wrapper li a {
   display: block;
   color: white;
@@ -95,14 +80,8 @@
 }
 
 .wrapper li a:hover {
-<<<<<<< HEAD
-<<<<<<< HEAD
   color: #161919;
   background: rgba(#dd3675, #b44593);
-}
-=======
-=======
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
   color: #000000;
   background: rgba(#dd3675, #b44593);
 }
@@ -118,7 +97,3 @@ a:hover img.imagedropshadow {
   -webkit-box-shadow: 1px 1px 5px rgb(255, 255, 255);
   box-shadow: 1px 1px 5px rgb(255, 255, 255);
 }
-<<<<<<< HEAD
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105
-=======
->>>>>>> 3dbc91759d2f866388a0a560270dc91581b6b105

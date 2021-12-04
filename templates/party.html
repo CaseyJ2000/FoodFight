@@ -1,73 +1,77 @@
 <html>
 
-<head>
-    <title>Create a Party</title>
-    <link rel="shortcut icon" href="http://cdn.onlinewebfonts.com/svg/img_481531.png" />
-    <link href="/static/party.css" rel="stylesheet">
-    <link rel="stylesheet" href={{ url_for( 'static' , filename='profile.css' ) }} />
+    <head>
+        <title>Create a Party</title>
+        <link rel="shortcut icon"
+            href="http://cdn.onlinewebfonts.com/svg/img_481531.png" />
+        <link href="/static/party.css" rel="stylesheet">
+        <link rel="stylesheet" href={{ url_for( 'static' ,
+            filename='profile.css' ) }} />
 
-</head>
+    </head>
 
-<body>
-    <div class="wrapper">
-        <ul>
+    <body>
+        <div class="wrapper">
+            <ul>
+                <li><a href="/menu">Menu</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/search">Search</a></li>
+                <li><a href="/party">Create a Party</a></li>
+                <li id="floatRight"><a href="/login">Logout</a></li>
+                <li id="float_with_padding"><a href="/profile"><img
+                            class="imagedropshadow"
+                            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iconsdb.com%2Ficons%2Fpreview%2Fwhite%2Fuser-4-xxl.png&f=1&nofb=1"
+                            alt="profile" height="30" width="30"></a></li>
+            </ul>
+        </div>
 
-          <li><a href="/menu">Menu</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/search">Search</a></li>
-          <li><a href="/party">Create a Party</a></li>
-          <li id="floatRight"><a href="/login">Logout</a></li>
-          <li id="float_with_padding"><a href="/profile"><img class="imagedropshadow" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.iconsdb.com%2Ficons%2Fpreview%2Fwhite%2Fuser-4-xxl.png&f=1&nofb=1" alt="profile" height="30" width="30" ></a></li>
+        <center><h1 style="color: white;">Enter your party member's emails
+                seperated by spaces</h1></center>
+        <div class="s01">
+            <form action="/party" method="POST">
+                <div class="inner-form">
+                    <div class="input-field first-wrap">
+                        <input id="search" name="people_in_party" type="text"
+                            placeholder="People in party" />
+                    </div>
 
-        </ul>
-    </div>
-
-    <h1>Enter your party member's emails seperated by spaces</h1>
-
-
-    <div class="s01">
-        <form action="/party" method="POST">
-            <div class="inner-form">
-                <div class="input-field first-wrap">
-                    <input id="search" name="people_in_party" type="text" placeholder="People in party" />
+                    <div class="input-field third-wrap">
+                        <button class="btn-search" value="Search" type="submit">Submit</button>
+                    </div>
                 </div>
 
-                <div class="input-field third-wrap">
-                    <button class="btn-search" value="Search" type="submit">Submit</button>
-                </div>
+
+
             </div>
 
+        </form>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for messages in messages %}
+            <p style="color:black;">{{ messages}}</p>
+            {%endfor%}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <!-- Get length of results and print -->
+        {% if recieved_party_data %}
+        {%for i in range (0, length)%}
+        <br>
+        <div class="box">
+            <h2 class="title">{{ name [i] }} </h2>
+            <img class="food_image" src="{{ image [i] }}" width=300 height=300
+                />
+            <p class="rating"> &#9733; {{ rating[i] }}</p>
+            <a href="{{ yelp_url[i] }}">Link to Yelp Page</a>
 
 
-    </div>
-
-    </form>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class="flashes">
-        {% for messages in messages %}
-        <p style="color:black;">{{ messages}}</p>
-        {%endfor%}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    <!-- Get length of results and print -->
-    {% if recieved_party_data %}
-    {%for i in range (0, length)%}
-    <br>
-    <div class="box">
-        <h2 class="title">{{ name [i] }} </h2>
-        <img class="food_image" src="{{ image [i] }}" width=300 height=300 />
-        <p class="rating"> &#9733; {{ rating[i] }}</p>
-        <a href="{{ yelp_url[i] }}">Link to Yelp Page</a>
-
-
-    </div>
-    <br>
-    <br>
-    {% endfor %}
-    {% endif %}
-</body>
+        </div>
+        <br>
+        <br>
+        {% endfor %}
+        {% endif %}
+    </body>
 
 
 

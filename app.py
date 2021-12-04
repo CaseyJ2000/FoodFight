@@ -12,7 +12,6 @@ from flask_login import (
     UserMixin,
     login_required,
 )
-from flask import Flask, render_template, request, redirect, flash
 import flask
 from werkzeug.security import generate_password_hash, check_password_hash
 from yelp import get_restaurant, get_restaurant_details
@@ -100,17 +99,13 @@ def like():
 
 @app.route("/unlike", methods=["POST"])
 def unlike():
-
+    """Endpoint for unlike"""
     business_id = flask.request.form.get("Unlike")
     if business_id == "":
         return flask.redirect(flask.request.referrer)
     username = current_user.username
-    liked_restaurants = LikedBiz.query.filter_by(
-        username=username, business_id=business_id
-    ).first()
-    if liked_restaurants:
-        db.session.delete(LikedBiz(business_id=business_id, username=username))
-        db.session.commit()
+    LikedBiz.query.filter_by(username=username, business_id=business_id).delete()
+    db.session.commit()
     return flask.redirect(flask.request.referrer)
 
 
@@ -180,6 +175,7 @@ def get_party_rec():
 @app.route("/profile")
 @login_required
 def profile():
+    """Endpoint for profile"""
     username = current_user.username
     liked_biz = LikedBiz.query.filter_by(username=username).all()
 
@@ -192,10 +188,8 @@ def profile():
         sorted(user_liked.items(), key=operator.itemgetter(1), reverse=True)
     )
     liked_len = len(user_liked)
-
     restaurant_details = get_restaurant_details(liked_rest, liked_len)
 
-    """Loads profile webpage"""
     return flask.render_template(
         "profile.html",
         username=username,
@@ -204,6 +198,7 @@ def profile():
         user_liked=user_liked,
         name=restaurant_details["name"],
         image=restaurant_details["image"],
+        biz_id=restaurant_details["biz_id"],
         yelp_url=restaurant_details["yelp_url"],
         rating=restaurant_details["rating"],
         category=restaurant_details["category"],
@@ -263,7 +258,6 @@ def search_results():
             transactions=transactions,
             location_state=location_state,
         )
-
     return flask.render_template("search.html")
 
 
